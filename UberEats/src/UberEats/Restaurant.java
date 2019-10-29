@@ -1,7 +1,7 @@
 package UberEats;
 import java.util.Hashtable;
 
-
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
@@ -19,7 +19,7 @@ public class Restaurant extends Agent {
 	private int x;
 	private int y;
 	private int ranking;
-
+	private AID[] driverAgents; //ver melhor
 	// Put agent initializations here
 	protected void setup() {
 		// Create the catalogue
