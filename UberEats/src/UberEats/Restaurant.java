@@ -79,7 +79,7 @@ public class Restaurant extends Agent {
 
 	/**
 	   Inner class OfferRequestsServer.
-	   This is the behaviour used by Book-seller agents to serve incoming requests 
+	   This is the behaviour used by Restaurants agents to serve incoming requests 
 	   for offer from buyer agents.
 	   If the requested book is in the local catalogue the seller agent replies 
 	   with a PROPOSE message specifying the price. Otherwise a REFUSE message is
@@ -93,7 +93,7 @@ public class Restaurant extends Agent {
 				// CFP Message received. Process it
 				String foodType = msg.getContent();
 				ACLMessage reply = msg.createReply();
-
+				// ve se serve a comida que o cliente quer se sim envia-lhe as suas informações
 				Integer price = (Integer) catalogue.get(foodType);
 				if (price != null) {
 					// The requested book is available for sale. Reply with the price
@@ -130,9 +130,9 @@ public class Restaurant extends Agent {
 				// ACCEPT_PROPOSAL Message received. Process it
 				String title = msg.getContent();
 				ACLMessage reply = msg.createReply();
+				// o comprador deve enviar as suas coordenadas 
 
-				Integer price = (Integer) catalogue.remove(title);
-				if (price != null) {
+				/*if (price != null) {
 					reply.setPerformative(ACLMessage.INFORM);
 					System.out.println(title+" sold to agent "+msg.getSender().getName());
 				}
@@ -140,12 +140,22 @@ public class Restaurant extends Agent {
 					// The requested book has been sold to another buyer in the meanwhile .
 					reply.setPerformative(ACLMessage.FAILURE);
 					reply.setContent("not-available");
-				}
+				}*/
+				reply.setPerformative(ACLMessage.INFORM);
+				reply.setContent("Order in process");
 				myAgent.send(reply);
 			}
 			else {
 				block();
 			}
+			/*AGORA deve mandar mensagem a todos os drivers mensagem a perguntar 
+			 * quem esta disponivel(ocupado se estiver a entregar um pedido)
+			 * os drivers mandam mensagem para o restaurante com as suas coordenadas x y, 
+			 * o restaurante deve escolher o que demore menos tempo,
+			 * depois de escolhido envia mensagem ao driver que escolheu a perguntar se pode fazer o serviço 
+			 * se puder, fica tratado 
+			 * se não tem que ver os outros drivers e escolher outro
+			 * */
 		}
 	}  // End of inner class OfferRequestsServer
 }

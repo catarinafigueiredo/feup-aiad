@@ -12,6 +12,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import java.lang.Math; 
 public class Client extends Agent{
 	
 	private String food;
@@ -82,9 +83,9 @@ public class Client extends Agent{
 	 */
 	private class RequestPerformer extends Behaviour {
 		private AID bestSeller; // The agent who provides the best offer depends on the criterion
-		private int bestPrice;  // The best offered price
-		private int betterQuality; 
-		private int faster;
+		private double bestPrice;  // The best offered price
+		private double betterQuality; 
+		private double faster;
 		private int repliesCnt = 0; // The counter of replies from seller agents
 		private MessageTemplate mt; // The template to receive replies
 		private int step = 0;
@@ -117,17 +118,15 @@ public class Client extends Agent{
 						String[] tokens = reply.getContent().split(";");
 						int RestaurantX=Integer.parseInt(tokens[0]);
 						int RestaurantY=Integer.parseInt(tokens[1]);
-						int RestaurantRanking=Integer.parseInt([2]);
+						int RestaurantRanking=Integer.parseInt(tokens[2]);
 						int price = Integer.parseInt(tokens[3]);
+						double dist = Math.sqrt((y -RestaurantY ) * (y - RestaurantY) + (x - RestaurantX) * (x - RestaurantX));
 						
-						//int dist = 
 						// A melhor oferta depende do criterio escolhido pelo cliente
-						// Mais rapido 
-						//mais barato - combina a distancia do cliente e do restaurante + preco da comida 
-						//com mais qualidade
-						/*	private int bestPrice;  // The best offered price
-		private int betterQuality;
-		private int faster;*/
+						// Mais rapido que tem a dist mais pequena
+						//Mais barato - combina a distancia do cliente e do restaurante + preco da comida 
+						//Com mais qualidade - só tem em conta o ranking do restaurante
+						
 					        switch(criterion) 
 					        { 
 					            case "cheaper": 
@@ -139,15 +138,23 @@ public class Client extends Agent{
 					                System.out.println("one"); 
 					                break; 
 					            case "faster": 
-					            	if (bestSeller == null || RestaurantRanking < betterQuality ) {
+					            	if (bestSeller == null || dist < faster ) {
 										// This is the best offer at present
-					            		betterQuality = RestaurantRanking;
+					            		faster = dist;
 										bestSeller = reply.getSender();
 									}
 					                System.out.println("two"); 
 					                break; 
 					            case "BetterQuality": 
-					            	if (bestSeller == null || price < bestPrice) {
+					            	if (bestSeller == null ||  RestaurantRanking < betterQuality) {
+										// This is the best offer at present
+										bestPrice = price;
+										bestSeller = reply.getSender();
+									}
+					                System.out.println("three"); 
+					                break; 
+					            case "BetterPriceQuality": 
+					            	if (bestSeller == null ||  RestaurantRanking < betterQuality) {
 										// This is the best offer at present
 										bestPrice = price;
 										bestSeller = reply.getSender();
@@ -162,7 +169,7 @@ public class Client extends Agent{
 						
 					}
 					repliesCnt++;
-					if (repliesCnt >= sellerAgents.length) {
+					if (repliesCnt >= restaurantAgents.length) {
 						// We received all replies
 						step = 2; 
 					}
@@ -172,15 +179,15 @@ public class Client extends Agent{
 				}
 				break;
 			case 2:
-				// Send the purchase order to the seller that provided the best offer
+				// Send the purchase order to the seller that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				order.addReceiver(bestSeller);
-				order.setContent(targetBookTitle);
-				order.setConversationId("book-trade");
+				order.setContent(food);
+				order.setConversationId("food-trade");//book-trade
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);
 				// Prepare the template to get the purchase order reply
-				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("book-trade"),
+				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("food-trade"),//book-trade
 						MessageTemplate.MatchInReplyTo(order.getReplyWith()));
 				step = 3;
 				break;
@@ -191,12 +198,36 @@ public class Client extends Agent{
 					// Purchase order reply received
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate
-						System.out.println(targetBookTitle+" successfully purchased from agent "+reply.getSender().getName());
+						System.out.println(food +" successfully purchased from agent "+reply.getSender().getName());
 						System.out.println("Price = "+bestPrice);
+						System.out.println("Waiting order Arraival");
 						myAgent.doDelete();
 					}
 					else {
-						System.out.println("Attempt failed: requested book already sold.");
+						System.out.println("Attempt failed: restaurant not working rigth.");
+					}
+
+					step = 4;
+				}
+				else {
+					block();
+				}
+				break;
+			case 4:   // só recebe a mensagem com a informação do driver que vai levar a comida 
+				// fica à espera que o restaurante mande o driver entregar a comida
+				// Receive the purchase order reply
+				reply = myAgent.receive(mt);
+				if (reply != null) {
+					// Purchase order reply received
+					if (reply.getPerformative() == ACLMessage.INFORM) {
+						// Purchase successful. We can terminate
+						System.out.println(food +" successfully purchased from agent "+reply.getSender().getName());
+						System.out.println("Price = "+bestPrice);
+						System.out.println("Waiting order Arraival");
+						myAgent.doDelete();
+					}
+					else {
+						System.out.println("Attempt failed: restaurant not working rigth.");
 					}
 
 					step = 4;
@@ -210,7 +241,7 @@ public class Client extends Agent{
 
 		public boolean done() {
 			if (step == 2 && bestSeller == null) {
-				System.out.println("Attempt failed: "+targetBookTitle+" not available for sale");
+				System.out.println("Attempt failed: "+food +" not available for sale");
 			}
 			return ((step == 2 && bestSeller == null) || step == 4);
 		}
