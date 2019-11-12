@@ -24,7 +24,7 @@ public class Drivers extends Agent{
 	}
 	protected void setup() {
 		System.out.println("I'm driver "+ getAID().getName()+".");
-		Object[] args=getArguments();
+		/*Object[] args=getArguments();
 		if(args !=null && args.length>0) {
 			x=(int) args[0];
 			System.out.println("x is "+ x);
@@ -33,7 +33,7 @@ public class Drivers extends Agent{
 			timestamp=(int) args[2];
 			System.out.println("Timestamp is "+ timestamp);
 			
-		}
+		}*/
 		// Register the DRIVER service in the yellow pages
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());

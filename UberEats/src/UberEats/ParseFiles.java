@@ -11,7 +11,7 @@ public class ParseFiles {
 		ArrayList<Drivers> drivers = new ArrayList<Drivers>();
 		BufferedReader reader;
 		try {
-			reader = new BufferedReader(new FileReader("drivers.txt"));
+			reader = new BufferedReader(new FileReader("files/drivers.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {
@@ -39,7 +39,7 @@ public class ParseFiles {
 		ArrayList<Client> clients = new ArrayList<Client>();
 		BufferedReader reader;
 		try {
-			reader = new BufferedReader(new FileReader("clients.txt"));
+			reader = new BufferedReader(new FileReader("files/clients.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {
@@ -68,7 +68,7 @@ public class ParseFiles {
 		ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
 		BufferedReader reader;
 		try {
-			reader = new BufferedReader(new FileReader("restaurants.txt"));
+			reader = new BufferedReader(new FileReader("files/restaurants.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {
@@ -84,8 +84,8 @@ public class ParseFiles {
 				Hashtable hash= new Hashtable();
 				for (int i = 0; i < arr3.length; i++) {
 					String[] temp = arr3[i].split("-");
-					System.out.println(temp[0]);
-					System.out.println(temp[1]);
+					System.out.println( "aqui" + temp[0]);
+					System.out.println("aqui1" + temp[1]);
 					hash.put(Integer.parseInt(temp[1]), temp[0]);
 				}
 				Restaurant c= new Restaurant(arr[0],Integer.parseInt(arr2[0]),Integer.parseInt(arr2[1]),Integer.parseInt(arr[2]),hash);

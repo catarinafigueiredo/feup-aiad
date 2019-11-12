@@ -53,6 +53,24 @@ public class Client extends Agent{
 			 
 			 
 			 */
+			System.out.println("Trying to order "+food);
+			// Update the list of seller agents
+			DFAgentDescription template = new DFAgentDescription();
+			ServiceDescription sd = new ServiceDescription();
+			sd.setType("food-selling");
+			template.addServices(sd);
+			try {
+				DFAgentDescription[] result = DFService.search(this, template); 
+				System.out.println("Found the following Restaurants:");
+				restaurantAgents = new AID[result.length];
+				for (int i = 0; i < result.length; ++i) {
+					restaurantAgents[i] = result[i].getName();
+					System.out.println(restaurantAgents[i].getName());
+				}
+			}
+			catch (FIPAException fe) {
+				fe.printStackTrace();
+			}
 			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
 			addBehaviour(new TickerBehaviour(this, 100) {
@@ -65,11 +83,11 @@ public class Client extends Agent{
 					template.addServices(sd);
 					try {
 						DFAgentDescription[] result = DFService.search(myAgent, template); 
-						System.out.println("Found the following Restaurants:");
+						//System.out.println("Found the following Restaurants:");
 						restaurantAgents = new AID[result.length];
 						for (int i = 0; i < result.length; ++i) {
 							restaurantAgents[i] = result[i].getName();
-							System.out.println(restaurantAgents[i].getName());
+						//	System.out.println(restaurantAgents[i].getName());
 						}
 					}
 					catch (FIPAException fe) {
@@ -77,9 +95,10 @@ public class Client extends Agent{
 					}
 
 					// Perform the request
-					myAgent.addBehaviour(new RequestPerformer());
+					//myAgent.addBehaviour(new RequestPerformer());
 				}
 			} );
+			addBehaviour(new RequestPerformer());
 		}
 		else {
 			// Make the agent terminate

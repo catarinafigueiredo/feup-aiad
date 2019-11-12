@@ -3,6 +3,7 @@ import java.util.Hashtable;
 
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
@@ -12,6 +13,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.proto.SSResponderDispatcher;
 public class Restaurant extends Agent {
 
 	private static final long serialVersionUID = 1L;
@@ -176,7 +178,7 @@ public class Restaurant extends Agent {
 		public void action() {
 			switch(step) {
 			case 0:
-				 mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
+				 mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL); // criar thread para o resto 
 				ACLMessage msg = myAgent.receive(mt);
 				if (msg != null) {
 					// ACCEPT_PROPOSAL Message received. Process it
@@ -191,6 +193,16 @@ public class Restaurant extends Agent {
 				else {
 					block();
 				}
+				// SSResponderDispatcher
+				/*addBehaviour(new SSResponderDispatcher(myAgent, mt) {
+		
+					@Override
+					protected Behaviour createResponder(ACLMessage arg0) {
+						// TODO Auto-generated method stub
+						return null;
+					}
+				});*/
+				
 				step=1;
 				break;
 			case 1:
