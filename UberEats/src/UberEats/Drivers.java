@@ -8,10 +8,20 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 public class Drivers extends Agent{
+	private String name;
 	private int x;
 	private int y;
 	private int timestamp;
 	
+	public Drivers(String name,int x, int y, int timestamp){
+		this.name=name;
+		this.x = x;
+		this.y = y;
+		this.timestamp = timestamp;
+	}
+	public String getDriverName(){
+		return this.name;
+	}
 	protected void setup() {
 		System.out.println("I'm driver "+ getAID().getName()+".");
 		Object[] args=getArguments();
@@ -46,6 +56,11 @@ public class Drivers extends Agent{
 	}
 	
 	private class OfferDriverServer extends CyclicBehaviour {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public void action() {
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
 			ACLMessage msg = myAgent.receive(mt);

@@ -14,11 +14,12 @@ public class EcoSystem {
 	
 	//private ContainerController mainContainer;
 	
-	//private ArrayList<Drivers> drivers;
-	//private ArrayList<Client> clients;
-	//private ArrayList<Restaurant> restaurants;
+	/*private ArrayList<Drivers> drivers;
+	private ArrayList<Client> clients;
+	private ArrayList<Restaurant> restaurants;*/
 
 	public static void main(String[] args) {
+		ParseFiles parseFiles= new ParseFiles();
 		Runtime rt = Runtime.instance();
 
 		Profile p1 = new ProfileImpl();
@@ -31,11 +32,46 @@ public class EcoSystem {
 
 		
 		ArrayList<Drivers> drivers = new ArrayList<Drivers>();
-		 ArrayList<Client> clients= new ArrayList<Client>();
+		ArrayList<Client> clients= new ArrayList<Client>();
 		ArrayList<Restaurant> restaurants= new ArrayList<Restaurant>();
+		//fazer for por cada agente 
+		drivers=parseFiles.parseDrivers();
+		clients=parseFiles.parseClients();
+		restaurants=parseFiles.parseRestaurants();
 		
-		AgentController ac1;
+		
+		for(int i=0; i < drivers.size();i++) {
+			AgentController ac0;
+			try {
+				ac0= mainContainer.acceptNewAgent(drivers.get(i).getDriverName(), drivers.get(i));
+				ac0.start();
+			}catch (StaleProxyException e) {
+				e.printStackTrace();
+			}		
+		}
+		for(int i=0; i < restaurants.size();i++) {
+			AgentController ac0;
+			try {
+				ac0= mainContainer.acceptNewAgent(restaurants.get(i).getRestaurantName(), restaurants.get(i));
+				ac0.start();
+			}catch (StaleProxyException e) {
+				e.printStackTrace();
+			}		
+		}
+		for(int i=0; i < clients.size();i++) {
+			AgentController ac0;
+			try {
+				ac0= mainContainer.acceptNewAgent(clients.get(i).getClientName(), clients.get(i));
+				ac0.start();
+			}catch (StaleProxyException e) {
+				e.printStackTrace();
+			}		
+		}
+		
+		
+		/*AgentController ac1;
 		try {
+			
 			ac1 = mainContainer.acceptNewAgent("name1", new Agent()); // por o tipo de agente
 			ac1.start();
 		} catch (StaleProxyException e) {
@@ -57,7 +93,7 @@ public class EcoSystem {
 			ac3.start();
 		} catch (StaleProxyException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 }

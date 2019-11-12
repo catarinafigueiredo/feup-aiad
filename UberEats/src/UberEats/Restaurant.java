@@ -13,14 +13,31 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 public class Restaurant extends Agent {
+
+	private static final long serialVersionUID = 1L;
 	// The catalogue of foods for sale (maps the title of a book to its price)
 	private Hashtable catalogue;
 	// The GUI by means of which the user can add books in the catalogue
-	private RestaurantGui myGui;
 	private int x;
 	private int y;
+	private String name;
 	private int ranking;
-	private AID[] driverAgents; //ver melhor
+	private AID[] driverAgents; 
+	
+	public Restaurant(String name,int x,int y, int ranking, Hashtable catalogue) {
+		this.x=x;
+		this.y=y;
+		this.name=name;
+		this.ranking=ranking;
+		this.catalogue=catalogue;
+	}
+	
+	public String getRestaurantName(){
+		return this.name;
+	}
+	
+	
+	
 	// Put agent initializations here
 	protected void setup() {
 		/*FALTA O PARSE DOS ARGUMENTOS*/
@@ -46,6 +63,8 @@ public class Restaurant extends Agent {
 		}
 		
 		addBehaviour(new TickerBehaviour(this,100) {
+			private static final long serialVersionUID = 1L;
+
 			protected void onTick() { // atualiza de x em x os drivers disponiveis
 				//System.out.println("Trying to order "+food);
 				// Update the list of seller agents
@@ -86,7 +105,7 @@ public class Restaurant extends Agent {
 			fe.printStackTrace();
 		}
 		// Close the GUI
-		myGui.dispose();
+		//myGui.dispose();
 		// Printout a dismissal message
 		System.out.println("Seller-agent "+getAID().getName()+" terminating.");
 	}

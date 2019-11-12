@@ -14,7 +14,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.lang.Math; 
 public class Client extends Agent{
-	
+	private String name;
 	private String food;
 	private int x;
 	private int y;
@@ -22,6 +22,16 @@ public class Client extends Agent{
 	
 	private AID[] restaurantAgents;
 	
+	public Client(String name, int x,int y, String food, String criterion) {
+		this.name=name;
+		this.x=x;
+		this.y=y;
+		this.food=food;
+		this.criterion=criterion;
+	}
+	public String getClientName(){
+		return this.name;
+	}
 	@Override
 	protected void setup() {
 		System.out.println("I'm client "+ getAID().getName()+".");
@@ -45,7 +55,7 @@ public class Client extends Agent{
 			 */
 			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
-			addBehaviour(new TickerBehaviour(this, 10000) {
+			addBehaviour(new TickerBehaviour(this, 100) {
 				protected void onTick() {
 					System.out.println("Trying to order "+food);
 					// Update the list of seller agents
