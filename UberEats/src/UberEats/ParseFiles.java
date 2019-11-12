@@ -19,10 +19,10 @@ public class ParseFiles {
 				String[] arr2 = arr[1].split("-");
 
 				// substituir prints por criacao da classe
-				System.out.println(arr[0]);
+				/*System.out.println(arr[0]);
 				System.out.println(arr2[0]);
 				System.out.println(arr2[1]);
-				System.out.println(arr[2]);
+				System.out.println(arr[2]);*/
 				Drivers d= new Drivers(arr[0],Integer.parseInt(arr2[0]),Integer.parseInt(arr2[1]),Integer.parseInt(arr[2]));
 				drivers.add(d);
 				line = reader.readLine();
@@ -47,11 +47,11 @@ public class ParseFiles {
 				String[] arr2 = arr[1].split("-");
 
 				// substituir prints por criacao da classe
-				System.out.println(arr[0]);
+				/*System.out.println(arr[0]);
 				System.out.println(arr2[0]);
 				System.out.println(arr2[1]);
 				System.out.println(arr[2]);
-				System.out.println(arr[3]);
+				System.out.println(arr[3]);*/
 				Client c= new Client(arr[0],Integer.parseInt(arr2[0]),Integer.parseInt(arr2[1]),arr[2],arr[3]);
 				clients.add(c);
 				line = reader.readLine();
@@ -77,15 +77,15 @@ public class ParseFiles {
 				String[] arr3 = arr[3].split(";");
 
 				// substituir prints por criacao da classe
-				System.out.println(arr[0]);
-				System.out.println(arr2[0]);
-				System.out.println(arr2[1]);
-				System.out.println(arr[2]);
+				//System.out.println(arr[0]);
+				//System.out.println(arr2[0]);
+				//System.out.println(arr2[1]);
+				//System.out.println(arr[2]);
 				Hashtable hash= new Hashtable();
 				for (int i = 0; i < arr3.length; i++) {
 					String[] temp = arr3[i].split("-");
-					System.out.println( "aqui" + temp[0]);
-					System.out.println("aqui1" + temp[1]);
+					//System.out.println( "aqui" + temp[0]);
+					//System.out.println("aqui1" + temp[1]);
 					hash.put(Integer.parseInt(temp[1]), temp[0]);
 				}
 				Restaurant c= new Restaurant(arr[0],Integer.parseInt(arr2[0]),Integer.parseInt(arr2[1]),Integer.parseInt(arr[2]),hash);

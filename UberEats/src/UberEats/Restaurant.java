@@ -32,6 +32,7 @@ public class Restaurant extends Agent {
 		this.name=name;
 		this.ranking=ranking;
 		this.catalogue=catalogue;
+		
 	}
 	
 	public String getRestaurantName(){
@@ -41,10 +42,10 @@ public class Restaurant extends Agent {
 	
 	
 	// Put agent initializations here
+	@Override
 	protected void setup() {
 		/*FALTA O PARSE DOS ARGUMENTOS*/
 		// Create the catalogue
-		catalogue = new Hashtable();
        // encontrar todos os drivers para lhes poder mandar mensagem
 		// Create and show the GUI 
 		//myGui = new RestaurantGui(this);
@@ -63,6 +64,22 @@ public class Restaurant extends Agent {
 		catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
+		DFAgentDescription template = new DFAgentDescription();
+		ServiceDescription sds = new ServiceDescription();
+		sds.setType("food-delivery");
+		template.addServices(sds);
+		try {
+			DFAgentDescription[] result = DFService.search(this, template); 
+			//System.out.println("Found the following Drivers:");
+			driverAgents = new AID[result.length];
+			for (int i = 0; i < result.length; ++i) {
+				driverAgents[i] = result[i].getName();
+				//System.out.println(driverAgents[i].getName());
+			}
+		}
+		catch (FIPAException fe) {
+			fe.printStackTrace();
+		}
 		
 		addBehaviour(new TickerBehaviour(this,100) {
 			private static final long serialVersionUID = 1L;
@@ -76,11 +93,11 @@ public class Restaurant extends Agent {
 				template.addServices(sd);
 				try {
 					DFAgentDescription[] result = DFService.search(myAgent, template); 
-					System.out.println("Found the following Drivers:");
+					//System.out.println("Found the following Drivers:");
 					driverAgents = new AID[result.length];
 					for (int i = 0; i < result.length; ++i) {
 						driverAgents[i] = result[i].getName();
-						System.out.println(driverAgents[i].getName());
+						//System.out.println(driverAgents[i].getName());
 					}
 				}
 				catch (FIPAException fe) {
@@ -134,9 +151,11 @@ public class Restaurant extends Agent {
 	 */
 	private class OfferRequestsServer extends CyclicBehaviour {
 		public void action() {
+			
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
 			ACLMessage msg = myAgent.receive(mt);
 			if (msg != null) {
+				System.out.println("Recebeu msg em offerRequests");
 				// CFP Message received. Process it
 				String foodType = msg.getContent();
 				ACLMessage reply = msg.createReply();

@@ -36,15 +36,15 @@ public class Client extends Agent{
 	protected void setup() {
 		System.out.println("I'm client "+ getAID().getName()+".");
 		Object[] args= getArguments();
-		if (args != null && args.length > 0) {
-			x = (int) args[0];
+		if (true) {
+			/*x = (int) args[0];
 			System.out.println("x is "+x);
 			y=(int) args[1];
 			System.out.println("y is "+y);
 			food = (String) args[2];
 			System.out.println("food is "+food);
 			criterion = (String) args[3];
-			System.out.println("Criterion is "+criterion);
+			System.out.println("Criterion is "+criterion);*/
 
 			/*-> Pergunta quem tem o que ele quer
 			   addBehavior(new MakeOrder(this)); 
@@ -133,6 +133,7 @@ public class Client extends Agent{
 			switch (step) {
 			case 0:
 				// Send the cfp to all sellers
+				System.out.println("Mandar cdp para os restaurantes.");
 				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
 				for (int i = 0; i < restaurantAgents.length; ++i) {
 					cfp.addReceiver(restaurantAgents[i]);
