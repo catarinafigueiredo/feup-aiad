@@ -22,6 +22,7 @@ public class Client extends Agent{
 	
 	private AID[] restaurantAgents;
 	
+	@Override
 	protected void setup() {
 		System.out.println("I'm client "+ getAID().getName()+".");
 		Object[] args= getArguments();
@@ -35,6 +36,14 @@ public class Client extends Agent{
 			criterion = (String) args[3];
 			System.out.println("Criterion is "+criterion);
 
+			/*-> Pergunta quem tem o que ele quer
+			   addBehavior(new MakeOrder(this)); 
+			 
+			 
+			 
+			 
+			 */
+			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
 			addBehaviour(new TickerBehaviour(this, 10000) {
 				protected void onTick() {
@@ -90,6 +99,7 @@ public class Client extends Agent{
 		private MessageTemplate mt; // The template to receive replies
 		private int step = 0;
 
+		@Override
 		public void action() {
 			switch (step) {
 			case 0:
@@ -182,7 +192,7 @@ public class Client extends Agent{
 				// Send the purchase order to the seller that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				order.addReceiver(bestSeller);
-				order.setContent(food);
+				order.setContent(food + ";"+x+"-"+y);
 				order.setConversationId("food-trade");//book-trade
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);

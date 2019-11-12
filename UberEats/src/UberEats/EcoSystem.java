@@ -5,11 +5,18 @@ import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
+import java.util.ArrayList;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
 public class EcoSystem {
+	
+	//private ContainerController mainContainer;
+	
+	//private ArrayList<Drivers> drivers;
+	//private ArrayList<Client> clients;
+	//private ArrayList<Restaurant> restaurants;
 
 	public static void main(String[] args) {
 		Runtime rt = Runtime.instance();
@@ -18,10 +25,15 @@ public class EcoSystem {
 		//p1.setParameter(...);
 		ContainerController mainContainer = rt.createMainContainer(p1);
 		
-		Profile p2 = new ProfileImpl();
+		//Profile p2 = new ProfileImpl();
 		//p2.setParameter(...);
-		ContainerController container = rt.createAgentContainer(p2);
+		//ContainerController container = rt.createAgentContainer(p2);
 
+		
+		ArrayList<Drivers> drivers = new ArrayList<Drivers>();
+		 ArrayList<Client> clients= new ArrayList<Client>();
+		ArrayList<Restaurant> restaurants= new ArrayList<Restaurant>();
+		
 		AgentController ac1;
 		try {
 			ac1 = mainContainer.acceptNewAgent("name1", new Agent()); // por o tipo de agente

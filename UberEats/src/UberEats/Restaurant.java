@@ -5,6 +5,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -22,19 +23,20 @@ public class Restaurant extends Agent {
 	private AID[] driverAgents; //ver melhor
 	// Put agent initializations here
 	protected void setup() {
+		/*FALTA O PARSE DOS ARGUMENTOS*/
 		// Create the catalogue
 		catalogue = new Hashtable();
-
+       // encontrar todos os drivers para lhes poder mandar mensagem
 		// Create and show the GUI 
-		myGui = new RestaurantGui(this);
-		myGui.showGui();
+		//myGui = new RestaurantGui(this);
+		//myGui.showGui();
 
 		// Register the book-selling service in the yellow pages
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
 		sd.setType("food-selling");
-		sd.setName("JADE-buy-food");
+		sd.setName("Restaurant");
 		dfd.addServices(sd);
 		try {
 			DFService.register(this, dfd);
@@ -42,6 +44,30 @@ public class Restaurant extends Agent {
 		catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
+		
+		addBehaviour(new TickerBehaviour(this,100) {
+			protected void onTick() { // atualiza de x em x os drivers disponiveis
+				//System.out.println("Trying to order "+food);
+				// Update the list of seller agents
+				DFAgentDescription template = new DFAgentDescription();
+				ServiceDescription sd = new ServiceDescription();
+				sd.setType("food-delivery");
+				template.addServices(sd);
+				try {
+					DFAgentDescription[] result = DFService.search(myAgent, template); 
+					System.out.println("Found the following Drivers:");
+					driverAgents = new AID[result.length];
+					for (int i = 0; i < result.length; ++i) {
+						driverAgents[i] = result[i].getName();
+						System.out.println(driverAgents[i].getName());
+					}
+				}
+				catch (FIPAException fe) {
+					fe.printStackTrace();
+				}
+				
+			}
+		});
 
 		// Add the behaviour serving queries from buyer agents
 		addBehaviour(new OfferRequestsServer());
@@ -122,32 +148,109 @@ public class Restaurant extends Agent {
 	   and replies with an INFORM message to notify the buyer that the
 	   purchase has been sucesfully completed.
 	 */
-	private class PurchaseOrdersServer extends CyclicBehaviour {
+	/*Deve mandar cfp para os drivers - ver se CYCLIc funciona senão trocar para behaviour*/ 
+	private class PurchaseOrdersServer extends CyclicBehaviour { // por steps
+		private AID bestDriver;
+		private int step=0;
+		private int repliesCnt = 0;
+		private MessageTemplate mt;
 		public void action() {
-			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
-			ACLMessage msg = myAgent.receive(mt);
-			if (msg != null) {
-				// ACCEPT_PROPOSAL Message received. Process it
-				String title = msg.getContent();
-				ACLMessage reply = msg.createReply();
-				// o comprador deve enviar as suas coordenadas 
-
-				/*if (price != null) {
+			switch(step) {
+			case 0:
+				 mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
+				ACLMessage msg = myAgent.receive(mt);
+				if (msg != null) {
+					// ACCEPT_PROPOSAL Message received. Process it
+					String title = msg.getContent();
+					ACLMessage reply = msg.createReply();
+					// o comprador deve enviar as suas coordenadas 
+	
 					reply.setPerformative(ACLMessage.INFORM);
-					System.out.println(title+" sold to agent "+msg.getSender().getName());
+					reply.setContent("Order in process");
+					myAgent.send(reply);
 				}
 				else {
-					// The requested book has been sold to another buyer in the meanwhile .
-					reply.setPerformative(ACLMessage.FAILURE);
-					reply.setContent("not-available");
-				}*/
-				reply.setPerformative(ACLMessage.INFORM);
-				reply.setContent("Order in process");
-				myAgent.send(reply);
+					block();
+				}
+				step=1;
+				break;
+			case 1:
+				// Send the cfp to all drivers
+				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
+				for (int i = 0; i < driverAgents.length; ++i) {
+					cfp.addReceiver(driverAgents[i]);
+				} 
+				cfp.setContent("coordenadas cliente + restaurant");
+				cfp.setConversationId("deliver-food");
+				cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
+				myAgent.send(cfp);
+				// Prepare the template to get proposals
+				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("deliver-food"),
+						MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
+				step = 2;
+				break;
+			case 2:
+				// Receive all proposals/refusals from drivers
+				//escolhe sempre o driver mais perto?!
+				ACLMessage reply= myAgent.receive(mt);
+				if(reply!=null) {
+					if(reply.getPerformative()==ACLMessage.PROPOSE) {
+						// Pode fazer o pedido 
+						String[]tokens= reply.getContent().split(";");
+						int driverX=Integer.parseInt(tokens[0]);
+						int driverY=Integer.parseInt(tokens[1]);
+						int driverTimestamp=Integer.parseInt(tokens[2]);
+					/*
+					  vê quando demora do driver para o restaurante para o cliente 
+					  fica o driver que demorar menos  
+					 
+					 escolher o driver apenas
+					 */
+					
+					}
+					repliesCnt++;
+					if(repliesCnt >= driverAgents.length) {
+						step=3;
+					}
+				}
+				break;
+			case 3:
+				// Send the delivery order to the driver that provided the choosed offer
+				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+				order.addReceiver(bestDriver);
+				order.setContent(";"+x+"-"+y); // deve mandar o xy do cliente para o driver entregar o pedido
+				order.setConversationId("food-delivery");//book-trade
+				order.setReplyWith("order"+System.currentTimeMillis());
+				myAgent.send(order);
+				// Prepare the template to get the purchase order reply
+				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("food-delivery"),//book-trade
+						MessageTemplate.MatchInReplyTo(order.getReplyWith()));
+				step = 4;
+				break;
+			case 4:
+				// order delivered
+				// Receive the purchase order reply
+				reply = myAgent.receive(mt);
+				if (reply != null) {
+					// Purchase order reply received
+					if (reply.getPerformative() == ACLMessage.INFORM) {
+						// Purchase successful. We can terminate
+						System.out.println(" Food delivered by "+reply.getSender().getName() + " at" + reply.getContent());
+						//System.out.println("Price = "+bestPrice);
+						//System.out.println("Waiting order Arraival");
+						//myAgent.doDelete();
+					}
+					else {
+						System.out.println("Attempt failed: restaurant not working rigth.");
+					}
+
+					step = 4;
+				}
+				else {
+					block();
+				}
 			}
-			else {
-				block();
-			}
+			
 			/*AGORA deve mandar mensagem a todos os drivers mensagem a perguntar 
 			 * quem esta disponivel(ocupado se estiver a entregar um pedido)
 			 * os drivers mandam mensagem para o restaurante com as suas coordenadas x y, 
