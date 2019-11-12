@@ -9,7 +9,7 @@ import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
-public class System {
+public class EcoSystem {
 
 	public static void main(String[] args) {
 		Runtime rt = Runtime.instance();
