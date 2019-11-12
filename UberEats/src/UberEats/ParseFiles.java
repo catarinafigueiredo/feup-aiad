@@ -84,9 +84,9 @@ public class ParseFiles {
 				Hashtable hash= new Hashtable();
 				for (int i = 0; i < arr3.length; i++) {
 					String[] temp = arr3[i].split("-");
-					//System.out.println( "aqui" + temp[0]);
-					//System.out.println("aqui1" + temp[1]);
-					hash.put(Integer.parseInt(temp[1]), temp[0]);
+					System.out.println( "COMIDA " + temp[0]);
+					System.out.println("PRECO " + temp[1]);
+					hash.put(temp[0],new Integer(Integer.parseInt( temp[1])));
 				}
 				Restaurant c= new Restaurant(arr[0],Integer.parseInt(arr2[0]),Integer.parseInt(arr2[1]),Integer.parseInt(arr[2]),hash);
 				restaurants.add(c);

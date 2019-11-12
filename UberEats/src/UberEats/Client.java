@@ -53,29 +53,47 @@ public class Client extends Agent{
 			 
 			 
 			 */
-			System.out.println("Trying to order "+food);
-			// Update the list of seller agents
-			DFAgentDescription template = new DFAgentDescription();
-			ServiceDescription sd = new ServiceDescription();
-			sd.setType("food-selling");
-			template.addServices(sd);
-			try {
-				DFAgentDescription[] result = DFService.search(this, template); 
-				System.out.println("Found the following Restaurants:");
-				restaurantAgents = new AID[result.length];
-				for (int i = 0; i < result.length; ++i) {
-					restaurantAgents[i] = result[i].getName();
-					System.out.println(restaurantAgents[i].getName());
-				}
-			}
-			catch (FIPAException fe) {
-				fe.printStackTrace();
-			}
+		
+			
+			 System.out.println("Trying to order "+food);
+			 /*addBehaviour(new Behaviour() {
+				
+
+					public void action() {
+						
+						// Update the list of seller agents
+						DFAgentDescription template = new DFAgentDescription();
+						ServiceDescription sd = new ServiceDescription();
+						sd.setType("food-selling");
+						template.addServices(sd);
+						try {
+							DFAgentDescription[] result = DFService.search(myAgent, template); 
+							//System.out.println("Found the following Restaurants:");
+							restaurantAgents = new AID[result.length];
+							for (int i = 0; i < result.length; ++i) {
+								restaurantAgents[i] = result[i].getName();
+								//System.out.println(restaurantAgents[i].getName());
+							}
+						}
+						catch (FIPAException fe) {
+							fe.printStackTrace();
+						}
+
+						// Perform the request
+						//myAgent.addBehaviour(new RequestPerformer());
+					}
+
+					@Override
+					public boolean done() {
+						// TODO Auto-generated method stub
+						return false;
+					}
+				} );*/
 			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
-			addBehaviour(new TickerBehaviour(this, 100) {
+			addBehaviour(new TickerBehaviour(this, 10000) {
 				protected void onTick() {
-					System.out.println("Trying to order "+food);
+					
 					// Update the list of seller agents
 					DFAgentDescription template = new DFAgentDescription();
 					ServiceDescription sd = new ServiceDescription();
@@ -83,11 +101,11 @@ public class Client extends Agent{
 					template.addServices(sd);
 					try {
 						DFAgentDescription[] result = DFService.search(myAgent, template); 
-						//System.out.println("Found the following Restaurants:");
+						System.out.println("Found the following Restaurants:");
 						restaurantAgents = new AID[result.length];
 						for (int i = 0; i < result.length; ++i) {
 							restaurantAgents[i] = result[i].getName();
-						//	System.out.println(restaurantAgents[i].getName());
+							System.out.println(restaurantAgents[i].getName());
 						}
 					}
 					catch (FIPAException fe) {
@@ -95,10 +113,10 @@ public class Client extends Agent{
 					}
 
 					// Perform the request
-					//myAgent.addBehaviour(new RequestPerformer());
+					myAgent.addBehaviour(new RequestPerformer());
 				}
 			} );
-			addBehaviour(new RequestPerformer());
+			//addBehaviour(new RequestPerformer());
 		}
 		else {
 			// Make the agent terminate
@@ -133,7 +151,7 @@ public class Client extends Agent{
 			switch (step) {
 			case 0:
 				// Send the cfp to all sellers
-				System.out.println("Mandar cdp para os restaurantes.");
+				System.out.println("Step 0 client");
 				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
 				for (int i = 0; i < restaurantAgents.length; ++i) {
 					cfp.addReceiver(restaurantAgents[i]);
@@ -149,6 +167,7 @@ public class Client extends Agent{
 				break;
 			case 1:
 				// Receive all proposals/refusals from seller agents
+				System.out.println("Step 1 client");
 				ACLMessage reply = myAgent.receive(mt);
 				if (reply != null) {
 					// Reply received
@@ -219,8 +238,10 @@ public class Client extends Agent{
 				}
 				break;
 			case 2:
+				System.out.println("Step 2 - O restaurante escolhido e ->"+ bestSeller.getName());
 				// Send the purchase order to the seller that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+				
 				order.addReceiver(bestSeller);
 				order.setContent(food + ";"+x+"-"+y);
 				order.setConversationId("food-trade");//book-trade

@@ -44,19 +44,19 @@ public class Restaurant extends Agent {
 	// Put agent initializations here
 	@Override
 	protected void setup() {
-		/*FALTA O PARSE DOS ARGUMENTOS*/
-		// Create the catalogue
+	
        // encontrar todos os drivers para lhes poder mandar mensagem
 		// Create and show the GUI 
 		//myGui = new RestaurantGui(this);
 		//myGui.showGui();
 
 		// Register the book-selling service in the yellow pages
+		System.out.println("I'm restaurant "+ getAID().getName()+".");
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
 		sd.setType("food-selling");
-		sd.setName("Restaurant");
+		sd.setName("JADE-book-trading");
 		dfd.addServices(sd);
 		try {
 			DFService.register(this, dfd);
@@ -64,22 +64,7 @@ public class Restaurant extends Agent {
 		catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
-		DFAgentDescription template = new DFAgentDescription();
-		ServiceDescription sds = new ServiceDescription();
-		sds.setType("food-delivery");
-		template.addServices(sds);
-		try {
-			DFAgentDescription[] result = DFService.search(this, template); 
-			//System.out.println("Found the following Drivers:");
-			driverAgents = new AID[result.length];
-			for (int i = 0; i < result.length; ++i) {
-				driverAgents[i] = result[i].getName();
-				//System.out.println(driverAgents[i].getName());
-			}
-		}
-		catch (FIPAException fe) {
-			fe.printStackTrace();
-		}
+	
 		
 		addBehaviour(new TickerBehaviour(this,100) {
 			private static final long serialVersionUID = 1L;
@@ -155,12 +140,15 @@ public class Restaurant extends Agent {
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
 			ACLMessage msg = myAgent.receive(mt);
 			if (msg != null) {
-				System.out.println("Recebeu msg em offerRequests");
+				
 				// CFP Message received. Process it
 				String foodType = msg.getContent();
+				System.out.println("Recebeu msg em offerRequests COMIDA PEDIDA->"+ foodType);
 				ACLMessage reply = msg.createReply();
 				// ve se serve a comida que o cliente quer se sim envia-lhe as suas informações
+				
 				Integer price = (Integer) catalogue.get(foodType);
+				System.out.println("O preco de "+ foodType +" e "+ price);
 				if (price != null) {
 					// The requested book is available for sale. Reply with the price
 					reply.setPerformative(ACLMessage.PROPOSE);
@@ -197,9 +185,11 @@ public class Restaurant extends Agent {
 		public void action() {
 			switch(step) {
 			case 0:
-				 mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL); // criar thread para o resto 
+				
+				mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL); // criar thread para o resto 
 				ACLMessage msg = myAgent.receive(mt);
 				if (msg != null) {
+					System.out.print("Recebi proposal");
 					// ACCEPT_PROPOSAL Message received. Process it
 					String title = msg.getContent();
 					ACLMessage reply = msg.createReply();
@@ -299,6 +289,7 @@ public class Restaurant extends Agent {
 				else {
 					block();
 				}
+				break;
 			}
 			
 			/*AGORA deve mandar mensagem a todos os drivers mensagem a perguntar 
