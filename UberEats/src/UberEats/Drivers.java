@@ -74,7 +74,7 @@ public class Drivers extends Agent{
 					reply.setPerformative(ACLMessage.PROPOSE);
 					// Envia como resposta o x o y o Ranking e o preço
 					reply.setContent(String.valueOf(x) + ";" +String.valueOf(y) + ";" + String.valueOf(timestamp));
-				// x-y;timestamp
+				// x;y;timestamp
 				}
 				else {
 					// The requested book is NOT available for sale.
@@ -96,11 +96,10 @@ public class Drivers extends Agent{
 			 mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
 				ACLMessage msg = myAgent.receive(mt);
 				if (msg != null) {
-					// ACCEPT_PROPOSAL Message received. Process it
-					// atualizar timestamp = timestamp atual + tempo para entregar o pedido
+					double time= Double.parseDouble(msg.getContent());
+					timestamp += time;
 					ACLMessage reply = msg.createReply();
 					// o comprador deve enviar as suas coordenadas 
-	
 					reply.setPerformative(ACLMessage.INFORM);
 					reply.setContent(String.valueOf(timestamp));
 					myAgent.send(reply);

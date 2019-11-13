@@ -243,7 +243,7 @@ public class Client extends Agent{
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				
 				order.addReceiver(bestSeller);
-				order.setContent(food + ";"+x+"-"+y);
+				order.setContent(food + ";"+x+";"+y);
 				order.setConversationId("food-trade");//book-trade
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);
