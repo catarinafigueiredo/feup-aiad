@@ -74,7 +74,7 @@ public class Drivers extends Agent{
 					reply.setPerformative(ACLMessage.PROPOSE);
 					// Envia como resposta o x o y o Ranking e o preço
 					reply.setContent(String.valueOf(x) + ";" +String.valueOf(y) + ";" + String.valueOf(timestamp));
-				// x-y;timestamp
+				// x;y;timestamp
 				}
 				else {
 					// The requested book is NOT available for sale.
