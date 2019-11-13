@@ -322,7 +322,12 @@ public class Restaurant extends Agent {
 		@Override
 		public boolean done() {
 			// TODO Auto-generated method stub
-			return false;
+		
+				if (step == 3 && bestDriver == null) {
+					System.out.println("Attempt failed: "+food +" not available for sale");
+				}
+				return ((step == 3 && bestDriver == null) || step == 5);
+			
 		}
 		
 	}
