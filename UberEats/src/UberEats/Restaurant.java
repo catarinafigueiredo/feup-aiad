@@ -96,7 +96,7 @@ public class Restaurant extends Agent {
 		addBehaviour(new OfferRequestsServer());
 
 		// Add the behaviour serving purchase orders from buyer agents
-		addBehaviour(new PurchaseOrdersServer());
+		addBehaviour(new PurchaseOrdersServe());
 	}
 
 	// Put agent clean-up operations here
@@ -168,6 +168,132 @@ public class Restaurant extends Agent {
 		}
 	}  // End of inner class OfferRequestsServer
 
+	
+	
+	private class PurchaseOrdersServe extends CyclicBehaviour {
+		public void action() {
+			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
+			ACLMessage msg = myAgent.receive(mt);
+			if (msg != null) {
+				System.out.print("Recebi proposal vou enviar inform");
+				// ACCEPT_PROPOSAL Message received. Process it
+				String title = msg.getContent();
+				ACLMessage reply = msg.createReply();
+				// o comprador deve enviar as suas coordenadas 
+
+				reply.setPerformative(ACLMessage.INFORM);
+				reply.setContent("Order in process");
+				myAgent.send(reply);
+				// n funciona
+				myAgent.addBehaviour(new FindDrivers());
+				
+			}
+			else {
+				block();
+			}
+		
+			}
+		
+	}  // End of inner class OfferRequestsServer
+	
+	private class FindDrivers extends Behaviour{
+
+		private static final long serialVersionUID = 1L;
+		private AID bestDriver;
+		private int step=1;
+		private int repliesCnt = 0;
+		private MessageTemplate mt;
+		public void action() {
+			System.out.println("Entrei em FindDrivers e step é ->"+ step);
+			switch(step) { 
+			case 1:
+				// Send the cfp to all drivers
+				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
+				for (int i = 0; i < driverAgents.length; ++i) {
+					cfp.addReceiver(driverAgents[i]);
+				} 
+				cfp.setContent("coordenadas cliente + restaurant");
+				cfp.setConversationId("deliver-food");
+				cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
+				myAgent.send(cfp);
+				System.out.println("enviei cfp para drivers");
+				// Prepare the template to get proposals
+				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("deliver-food"),
+						MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
+				step = 2;
+				break;
+			case 2:
+				// Receive all proposals/refusals from drivers
+				//escolhe sempre o driver mais perto?!
+				ACLMessage reply= myAgent.receive(mt);
+				if(reply!=null) {
+					System.out.println("recebi resposta do driver");
+					if(reply.getPerformative()==ACLMessage.PROPOSE) {
+						// Pode fazer o pedido 
+						String[]tokens= reply.getContent().split(";");
+						int driverX=Integer.parseInt(tokens[0]);
+						int driverY=Integer.parseInt(tokens[1]);
+						int driverTimestamp=Integer.parseInt(tokens[2]);
+					/*
+					  vê quando demora do driver para o restaurante para o cliente 
+					  fica o driver que demorar menos  
+					 
+					 escolher o driver apenas
+					 */
+					
+					}
+					repliesCnt++;
+					if(repliesCnt >= driverAgents.length) {
+						step=3;
+					}
+				}
+				break;
+			case 3:
+				// Send the delivery order to the driver that provided the choosed offer
+				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+				order.addReceiver(bestDriver);
+				order.setContent(";"+x+"-"+y); // deve mandar o xy do cliente para o driver entregar o pedido
+				order.setConversationId("food-delivery");//book-trade
+				order.setReplyWith("order"+System.currentTimeMillis());
+				myAgent.send(order);
+				// Prepare the template to get the purchase order reply
+				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("food-delivery"),//book-trade
+						MessageTemplate.MatchInReplyTo(order.getReplyWith()));
+				step = 4;
+				break;
+			case 4:
+				// order delivered
+				// Receive the purchase order reply
+				reply = myAgent.receive(mt);
+				if (reply != null) {
+					// Purchase order reply received
+					if (reply.getPerformative() == ACLMessage.INFORM) {
+						// Purchase successful. We can terminate
+						System.out.println(" Food delivered by "+reply.getSender().getName() + " at" + reply.getContent());
+						//System.out.println("Price = "+bestPrice);
+						//System.out.println("Waiting order Arraival");
+						//myAgent.doDelete();
+					}
+					else {
+						System.out.println("Attempt failed: restaurant not working rigth.");
+					}
+
+					step = 5;
+				}
+				else {
+					block();
+				}
+				break;
+			}
+		}
+
+		@Override
+		public boolean done() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		
+	}
 	/**
 	   Inner class PurchaseOrdersServer.
 	   This is the behaviour used by Book-seller agents to serve incoming 
@@ -291,15 +417,6 @@ public class Restaurant extends Agent {
 				}
 				break;
 			}
-			
-			/*AGORA deve mandar mensagem a todos os drivers mensagem a perguntar 
-			 * quem esta disponivel(ocupado se estiver a entregar um pedido)
-			 * os drivers mandam mensagem para o restaurante com as suas coordenadas x y, 
-			 * o restaurante deve escolher o que demore menos tempo,
-			 * depois de escolhido envia mensagem ao driver que escolheu a perguntar se pode fazer o serviço 
-			 * se puder, fica tratado 
-			 * se não tem que ver os outros drivers e escolher outro
-			 * */
 		}
 	}  // End of inner class OfferRequestsServer
 }
