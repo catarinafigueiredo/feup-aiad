@@ -1,5 +1,6 @@
 package UberEats;
 import java.util.Hashtable;
+import java.lang.Math;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -178,6 +179,10 @@ public class Restaurant extends Agent {
 				System.out.print("Recebi proposal vou enviar inform");
 				// ACCEPT_PROPOSAL Message received. Process it
 				String title = msg.getContent();
+				String[]tokens= title.split(";");
+				String food = tokens[0];
+				int clientX=Integer.parseInt(tokens[1]);
+				int clientY=Integer.parseInt(tokens[2]);
 				ACLMessage reply = msg.createReply();
 				// o comprador deve enviar as suas coordenadas 
 
@@ -185,7 +190,7 @@ public class Restaurant extends Agent {
 				reply.setContent("Order in process");
 				myAgent.send(reply);
 				// n funciona
-				myAgent.addBehaviour(new FindDrivers());
+				myAgent.addBehaviour(new FindDrivers(food, clientX, clientY));
 				
 			}
 			else {
@@ -200,9 +205,27 @@ public class Restaurant extends Agent {
 
 		private static final long serialVersionUID = 1L;
 		private AID bestDriver;
+		private int bestDriverX;
+		private int bestDriverY;
+		private int bestDriverTimestamp;
+		private double bestDriverDist;
+		String food;
+		int clientX;
+		int clientY;
+		double distClientRest;
+		
 		private int step=1;
 		private int repliesCnt = 0;
 		private MessageTemplate mt;
+		
+		FindDrivers(String food, int clientX, int clientY) {
+			this.food = food;
+			this.clientX = clientX;
+			this.clientY = clientY;
+			
+			this.distClientRest = Math.sqrt((y -clientY ) * (y - clientY) + (x - clientX) * (x - clientX));
+		}
+		
 		public void action() {
 			System.out.println("Entrei em FindDrivers e step é ->"+ step);
 			switch(step) { 
@@ -212,7 +235,7 @@ public class Restaurant extends Agent {
 				for (int i = 0; i < driverAgents.length; ++i) {
 					cfp.addReceiver(driverAgents[i]);
 				} 
-				cfp.setContent("coordenadas cliente + restaurant");
+				cfp.setContent("info");
 				cfp.setConversationId("deliver-food");
 				cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
 				myAgent.send(cfp);
@@ -231,15 +254,24 @@ public class Restaurant extends Agent {
 					if(reply.getPerformative()==ACLMessage.PROPOSE) {
 						// Pode fazer o pedido 
 						String[]tokens= reply.getContent().split(";");
-						int driverX=Integer.parseInt(tokens[0]);
-						int driverY=Integer.parseInt(tokens[1]);
-						int driverTimestamp=Integer.parseInt(tokens[2]);
-					/*
-					  vê quando demora do driver para o restaurante para o cliente 
-					  fica o driver que demorar menos  
-					 
-					 escolher o driver apenas
-					 */
+						
+						int drivX=Integer.parseInt(tokens[0]);
+						int drivY=Integer.parseInt(tokens[1]);
+						int drivTS=Integer.parseInt(tokens[2]);
+						
+						double distRestDriv = Math.sqrt((y -drivY ) * (y - drivY) + (x - drivX) * (x - drivX));
+						double totalDist = this.distClientRest + distRestDriv;
+						drivTS+=totalDist;
+						
+						if(this.bestDriver==null || drivTS<this.bestDriverTimestamp) {
+							this.bestDriverX = drivX;
+							this.bestDriverY = drivY;
+							this.bestDriverTimestamp = drivTS;
+							this.bestDriverDist = totalDist;
+							
+							bestDriver = reply.getSender();
+						}
+						
 					
 					}
 					repliesCnt++;
@@ -252,7 +284,7 @@ public class Restaurant extends Agent {
 				// Send the delivery order to the driver that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				order.addReceiver(bestDriver);
-				order.setContent(";"+x+"-"+y); // deve mandar o xy do cliente para o driver entregar o pedido
+				order.setContent(String.valueOf(this.bestDriverDist)); // deve mandar o xy do cliente para o driver entregar o pedido
 				order.setConversationId("food-delivery");//book-trade
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);
@@ -269,7 +301,7 @@ public class Restaurant extends Agent {
 					// Purchase order reply received
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate
-						System.out.println(" Food delivered by "+reply.getSender().getName() + " at" + reply.getContent());
+						System.out.println(" Food delivered by "+reply.getSender().getName() + " at " + reply.getContent());
 						//System.out.println("Price = "+bestPrice);
 						//System.out.println("Waiting order Arraival");
 						//myAgent.doDelete();
