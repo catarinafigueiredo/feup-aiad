@@ -1,0 +1,3 @@
+2 clientes com pedidos completamente diferentes mas so 1 driver.
+o driver tem que satisfazer os pedidos por ordem, isto é o primeiro cliente a pedir tem que ser o primeiro cliente
+a ser atendido.
