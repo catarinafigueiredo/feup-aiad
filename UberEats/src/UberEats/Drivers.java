@@ -1,4 +1,10 @@
 package UberEats;
+
+/*
+ * class Drivers
+ * 
+ * - Responsavel por implementar o agente Driver. */
+
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
@@ -7,6 +13,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+
 public class Drivers extends Agent{
 	private String name;
 	private int x;
@@ -23,17 +30,8 @@ public class Drivers extends Agent{
 		return this.name;
 	}
 	protected void setup() {
-		System.out.println("I'm driver "+ getAID().getName()+".");
-		/*Object[] args=getArguments();
-		if(args !=null && args.length>0) {
-			x=(int) args[0];
-			System.out.println("x is "+ x);
-			y=(int) args[1];
-			System.out.println("y is "+ y);
-			timestamp=(int) args[2];
-			System.out.println("Timestamp is "+ timestamp);
-			
-		}*/
+		System.out.println("Driver "+ getAID().getName()+" pronto.");
+		
 		// Register the DRIVER service in the yellow pages
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());

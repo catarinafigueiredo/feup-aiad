@@ -1,6 +1,9 @@
 package UberEats;
-import javax.swing.JFrame;
 
+/*
+ * class Client
+ * 
+ * - Responsavel por implementar o agente Client. */
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -13,7 +16,9 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.lang.Math; 
-public class Client extends Agent{
+
+public class Client extends Agent {
+	
 	private String name;
 	private String food;
 	private int x;
@@ -29,66 +34,19 @@ public class Client extends Agent{
 		this.food=food;
 		this.criterion=criterion;
 	}
-	public String getClientName(){
+	
+	public String getClientName() {
 		return this.name;
 	}
+	
 	@Override
 	protected void setup() {
-		System.out.println("I'm client "+ getAID().getName()+".");
+		System.out.println("Cliente "+ getAID().getName()+" pronto.");
 		Object[] args= getArguments();
 		if (true) {
-			/*x = (int) args[0];
-			System.out.println("x is "+x);
-			y=(int) args[1];
-			System.out.println("y is "+y);
-			food = (String) args[2];
-			System.out.println("food is "+food);
-			criterion = (String) args[3];
-			System.out.println("Criterion is "+criterion);*/
-
-			/*-> Pergunta quem tem o que ele quer
-			   addBehavior(new MakeOrder(this)); 
-			 
-			 
-			 
-			 
-			 */
-		
 			
-			 System.out.println("Trying to order "+food);
-			 /*addBehaviour(new Behaviour() {
-				
-
-					public void action() {
-						
-						// Update the list of seller agents
-						DFAgentDescription template = new DFAgentDescription();
-						ServiceDescription sd = new ServiceDescription();
-						sd.setType("food-selling");
-						template.addServices(sd);
-						try {
-							DFAgentDescription[] result = DFService.search(myAgent, template); 
-							//System.out.println("Found the following Restaurants:");
-							restaurantAgents = new AID[result.length];
-							for (int i = 0; i < result.length; ++i) {
-								restaurantAgents[i] = result[i].getName();
-								//System.out.println(restaurantAgents[i].getName());
-							}
-						}
-						catch (FIPAException fe) {
-							fe.printStackTrace();
-						}
-
-						// Perform the request
-						//myAgent.addBehaviour(new RequestPerformer());
-					}
-
-					@Override
-					public boolean done() {
-						// TODO Auto-generated method stub
-						return false;
-					}
-				} );*/
+			System.out.println("\nIniciando um pedido --------------------------------------");
+			System.out.println(getAID().getName() + " - vou pedir " + food + ".");
 			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
 			addBehaviour(new TickerBehaviour(this, 10000) {
@@ -101,11 +59,11 @@ public class Client extends Agent{
 					template.addServices(sd);
 					try {
 						DFAgentDescription[] result = DFService.search(myAgent, template); 
-						System.out.println("Found the following Restaurants:");
+						//System.out.println("Found the following Restaurants:");
 						restaurantAgents = new AID[result.length];
 						for (int i = 0; i < result.length; ++i) {
 							restaurantAgents[i] = result[i].getName();
-							System.out.println(restaurantAgents[i].getName());
+							//System.out.println(restaurantAgents[i].getName());
 						}
 					}
 					catch (FIPAException fe) {
@@ -129,7 +87,7 @@ public class Client extends Agent{
 	// Put agent clean-up operations here
 	protected void takeDown() {
 		// Printout a dismissal message
-		System.out.println("Buyer-agent "+getAID().getName()+" terminating.");
+		System.out.println(getAID().getName() + " - o meu pedido foi feito! Esperando entrega...");
 	}
 
 	/**
@@ -138,6 +96,7 @@ public class Client extends Agent{
 	   agents the target book.
 	 */
 	private class RequestPerformer extends Behaviour {
+		
 		private AID bestSeller; // The agent who provides the best offer depends on the criterion
 		private double bestPrice;  // The best offered price
 		private double betterQuality; 
@@ -151,7 +110,6 @@ public class Client extends Agent{
 			switch (step) {
 			case 0:
 				// Send the cfp to all sellers
-				System.out.println("Step 0 client");
 				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
 				for (int i = 0; i < restaurantAgents.length; ++i) {
 					cfp.addReceiver(restaurantAgents[i]);
@@ -167,7 +125,6 @@ public class Client extends Agent{
 				break;
 			case 1:
 				// Receive all proposals/refusals from seller agents
-				System.out.println("Step 1 client");
 				ACLMessage reply = myAgent.receive(mt);
 				if (reply != null) {
 					// Reply received
@@ -182,9 +139,9 @@ public class Client extends Agent{
 						double dist = Math.sqrt((y -RestaurantY ) * (y - RestaurantY) + (x - RestaurantX) * (x - RestaurantX));
 						
 						// A melhor oferta depende do criterio escolhido pelo cliente
-						// Mais rapido que tem a dist mais pequena
-						//Mais barato - combina a distancia do cliente e do restaurante + preco da comida 
-						//Com mais qualidade - só tem em conta o ranking do restaurante
+						// Mais rapido - que tem a dist mais pequena
+						// Mais barato - combina a distancia do cliente e do restaurante + preco da comida 
+						// Com mais qualidade - so tem em conta o ranking do restaurante
 						
 					        switch(criterion) 
 					        { 
@@ -194,7 +151,6 @@ public class Client extends Agent{
 										bestPrice = price;
 										bestSeller = reply.getSender();
 									}
-					                System.out.println("one"); 
 					                break; 
 					            case "faster": 
 					            	if (bestSeller == null || dist < faster ) {
@@ -202,7 +158,6 @@ public class Client extends Agent{
 					            		faster = dist;
 										bestSeller = reply.getSender();
 									}
-					                System.out.println("two"); 
 					                break; 
 					            case "BetterQuality": 
 					            	if (bestSeller == null ||  RestaurantRanking < betterQuality) {
@@ -210,7 +165,6 @@ public class Client extends Agent{
 										bestPrice = price;
 										bestSeller = reply.getSender();
 									}
-					                System.out.println("three"); 
 					                break; 
 					            case "BetterPriceQuality": 
 					            	if (bestSeller == null ||  RestaurantRanking < betterQuality) {
@@ -218,14 +172,10 @@ public class Client extends Agent{
 										bestPrice = price;
 										bestSeller = reply.getSender();
 									}
-					                System.out.println("three"); 
 					                break; 
 					            default:
-					                System.out.println("no match"); 
-					        } 
-					    
-						
-						
+					                System.out.println("ERROR! Criterio nao esperado!"); 
+					        }
 					}
 					repliesCnt++;
 					if (repliesCnt >= restaurantAgents.length) {
@@ -237,8 +187,10 @@ public class Client extends Agent{
 					block();
 				}
 				break;
+				
 			case 2:
-				System.out.println("Step 2 - O restaurante escolhido e ->"+ bestSeller.getName());
+				
+				System.out.println("SISTEMA - melhor restaurante para o pedido " + getAID().getName() + " é " + bestSeller.getName() + ".");
 				// Send the purchase order to the seller that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				
@@ -252,6 +204,7 @@ public class Client extends Agent{
 						MessageTemplate.MatchInReplyTo(order.getReplyWith()));
 				step = 3;
 				break;
+				
 			case 3:      
 				// Receive the purchase order reply
 				reply = myAgent.receive(mt);
@@ -259,9 +212,7 @@ public class Client extends Agent{
 					// Purchase order reply received
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate
-						System.out.println(food +" successfully purchased from agent "+reply.getSender().getName());
-						System.out.println("Price = "+bestPrice);
-						System.out.println("Waiting order Arraival");
+						System.out.println("SISTEMA - " + getAID().getName() + " comprou " + food + " do restaurante " + reply.getSender().getName() + ".");
 						myAgent.doDelete();
 					}
 					else {
@@ -306,6 +257,5 @@ public class Client extends Agent{
 			}
 			return ((step == 2 && bestSeller == null) || step == 4);
 		}
-	}  // End of inner class RequestPerformer
+	}
 }
-
