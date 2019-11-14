@@ -191,7 +191,7 @@ public class Restaurant extends Agent {
 		
 	}  // End of inner class OfferRequestsServer
 	
-	private class FindDrivers extends Behaviour{
+	private class FindDrivers extends Behaviour {
 
 		private static final long serialVersionUID = 1L;
 		private AID bestDriver;
@@ -298,7 +298,7 @@ public class Restaurant extends Agent {
 					// Purchase order reply received
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate
-						System.out.println("PEDIDO TERMINADO! Comida entregue por "+reply.getSender().getName() + " em " + reply.getContent() + ".");
+						System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " em " + reply.getContent() + ".");
 					}
 					else {
 						System.out.println("Attempt failed: restaurant not working right.");
@@ -318,7 +318,7 @@ public class Restaurant extends Agent {
 			// TODO Auto-generated method stub
 		
 				if (step == 3 && bestDriver == null) {
-					System.out.println("Attempt failed: "+food +" not available for sale");
+					System.out.println("Attempt failed: " + food + " not available for sale.");
 				}
 				return ((step == 3 && bestDriver == null) || step == 5);
 			
