@@ -1,0 +1,2 @@
+igual ao cen2 mas com outro driver com timestamp mais avançado do que o primeiro.
+no fim ambos os pedidos devem ser atendidos sendo que o primeiro driver a ser selecionado é o primeiro no ficheiro.
