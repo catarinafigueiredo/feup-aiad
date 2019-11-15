@@ -15,6 +15,10 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.Math; 
 
 public class Client extends Agent {
@@ -25,6 +29,8 @@ public class Client extends Agent {
 	private int y;
 	private String criterion;
 	
+	PrintWriter writer;
+	
 	private AID[] restaurantAgents;
 	
 	public Client(String name, int x,int y, String food, String criterion) {
@@ -33,6 +39,12 @@ public class Client extends Agent {
 		this.y=y;
 		this.food=food;
 		this.criterion=criterion;
+		
+		try {
+			this.writer = new PrintWriter(name+".txt", "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getClientName() {
@@ -41,12 +53,14 @@ public class Client extends Agent {
 	
 	@Override
 	protected void setup() {
-		System.out.println("Cliente "+ getAID().getName()+" pronto.");
+		//System.out.println("Cliente "+ getAID().getName()+" pronto.");
+		this.writer.println("Estou pronto para pedir.");
 		Object[] args= getArguments();
 		if (true) {
 			
-			System.out.println("\nIniciando um pedido --------------------------------------");
-			System.out.println(getAID().getName() + " - vou pedir " + food + ".");
+			//System.out.println("\nIniciando um pedido --------------------------------------");
+			//System.out.println(getAID().getName() + " - vou pedir " + food + ".");
+			this.writer.println("Vou pedir " + food + ".");
 			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
 			addBehaviour(new TickerBehaviour(this, 10000) {
@@ -78,7 +92,8 @@ public class Client extends Agent {
 		}
 		else {
 			// Make the agent terminate
-			System.out.println("No food available");
+			//System.out.println("No food available");
+			this.writer.println("O que quero nao esta disponivel.");
 			doDelete();
 		}
 	}
@@ -87,7 +102,9 @@ public class Client extends Agent {
 	// Put agent clean-up operations here
 	protected void takeDown() {
 		// Printout a dismissal message
-		System.out.println(getAID().getName() + " - o meu pedido foi feito! Esperando entrega...");
+		//System.out.println(getAID().getName() + " - o meu pedido foi feito! Aguardando entrega...");
+		this.writer.println("O meu pedido foi feito! Aguardando entrega...");
+		this.writer.close();
 	}
 
 	/**
@@ -174,7 +191,8 @@ public class Client extends Agent {
 									}
 					                break; 
 					            default:
-					                System.out.println("ERROR! Criterio nao esperado!"); 
+					                //System.out.println("ERROR! Criterio nao esperado!");
+					                writer.println("ERRO! O meu criterio nao existe!");
 					        }
 					}
 					repliesCnt++;
@@ -190,7 +208,7 @@ public class Client extends Agent {
 				
 			case 2:
 				
-				System.out.println("SISTEMA - melhor restaurante para o pedido " + getAID().getName() + " é " + bestSeller.getName() + ".");
+				System.out.println("SISTEMA - melhor restaurante para o pedido " + getAID().getName() + " e " + bestSeller.getName() + ".");
 				// Send the purchase order to the seller that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				
@@ -216,7 +234,7 @@ public class Client extends Agent {
 						myAgent.doDelete();
 					}
 					else {
-						System.out.println("Attempt failed: restaurant not working rigth.");
+						System.out.println("ERRO! Restaurante nao esta a funcionar como esperado!");
 					}
 
 					step = 4;

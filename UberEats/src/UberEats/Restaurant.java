@@ -266,11 +266,11 @@ public class Restaurant extends Agent {
 							
 							bestDriver = reply.getSender();
 						}
-						
-						System.out.println(getAID().getName() + " - driver " + reply.getSender().getName() + " selecionado.");
 					}
 					repliesCnt++;
+					
 					if(repliesCnt >= driverAgents.length) {
+						System.out.println(getAID().getName() + " - driver " + reply.getSender().getName() + " selecionado.");
 						step=3;
 					}
 				}
