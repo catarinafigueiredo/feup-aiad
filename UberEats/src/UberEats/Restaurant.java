@@ -6,7 +6,7 @@ package UberEats;
  * - Responsavel por implementar o agente Restaurant. */
 
 import java.util.Hashtable;
-
+import java.io.PrintWriter;
 import java.lang.Math;
 
 import jade.core.AID;
@@ -31,6 +31,8 @@ public class Restaurant extends Agent {
 	private int x;
 	private int y;
 	
+	PrintWriter writer;
+	
 	private String name;
 	
 	private int ranking;
@@ -43,6 +45,12 @@ public class Restaurant extends Agent {
 		this.name = name;
 		this.ranking = ranking;
 		this.catalogue = catalogue;
+		
+		try {
+			this.writer = new PrintWriter(name+".txt", "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getRestaurantName(){
@@ -52,7 +60,8 @@ public class Restaurant extends Agent {
 	@Override
 	protected void setup() {
 		
-		System.out.println("Restaurante " + getAID().getName() + " pronto.");
+		//System.out.println("Restaurante " + getAID().getName() + " pronto.");
+		this.writer.println(this.name+" pronto.");
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
@@ -88,6 +97,20 @@ public class Restaurant extends Agent {
 				
 			}
 		});
+		
+		addBehaviour(new TickerBehaviour(this,30000) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			protected void onTick() {
+				
+				takeDown();
+				
+			}
+			
+		});
 
 		// Add the behaviour serving queries from buyer agents
 		addBehaviour(new OfferRequestsServer());
@@ -95,9 +118,12 @@ public class Restaurant extends Agent {
 		// Add the behaviour serving purchase orders from buyer agents
 		addBehaviour(new PurchaseOrdersServe());
 	}
+	
+	
 
 	// Put agent clean-up operations here
 	protected void takeDown() {
+		this.writer.close();
 		// Deregister from the yellow pages
 		try {
 			DFService.deregister(this);
@@ -223,7 +249,8 @@ public class Restaurant extends Agent {
 			case 1:
 				// Send the cfp to all drivers
 				
-				System.out.println(getAID().getName() + " contactando drivers...");
+				//System.out.println(getAID().getName() + " contactando drivers...");
+				writer.println("Pagamento feito. Iniciando contacto com driver para fazer a entrega...");
 				
 				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
 				for (int i = 0; i < driverAgents.length; ++i) {
@@ -270,7 +297,8 @@ public class Restaurant extends Agent {
 					repliesCnt++;
 					
 					if(repliesCnt >= driverAgents.length) {
-						System.out.println(getAID().getName() + " - driver " + reply.getSender().getName() + " selecionado.");
+						System.out.println("SISTEMA - driver " + reply.getSender().getName() + " selecionado.");
+						writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
 						step=3;
 					}
 				}
@@ -299,6 +327,7 @@ public class Restaurant extends Agent {
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate
 						System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " em " + reply.getContent() + ".");
+						//writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
 					}
 					else {
 						System.out.println("Attempt failed: restaurant not working right.");

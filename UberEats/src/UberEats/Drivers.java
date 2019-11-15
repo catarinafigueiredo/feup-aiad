@@ -1,5 +1,7 @@
 package UberEats;
 
+import java.io.PrintWriter;
+
 /*
  * class Drivers
  * 
@@ -7,6 +9,7 @@ package UberEats;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -14,23 +17,33 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class Drivers extends Agent{
+public class Drivers extends Agent {
+	
 	private String name;
 	private int x;
 	private int y;
 	private int timestamp;
 	
+	PrintWriter writer;
+	
 	public Drivers(String name,int x, int y, int timestamp){
-		this.name=name;
+		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.timestamp = timestamp;
+		
+		try {
+			this.writer = new PrintWriter(name+".txt", "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	public String getDriverName(){
 		return this.name;
 	}
 	protected void setup() {
-		System.out.println("Driver "+ getAID().getName()+" pronto.");
+		//System.out.println("Driver "+ getAID().getName()+" pronto.");
+		this.writer.println("Estou pronto para entregar pedidos.");
 		
 		// Register the DRIVER service in the yellow pages
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -51,6 +64,20 @@ public class Drivers extends Agent{
 		addBehaviour(new OfferDriverServer());
 		
 		addBehaviour(new DeliverFoodServer());
+		
+		addBehaviour(new TickerBehaviour(this,30000) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			protected void onTick() {
+				
+				takeDown();
+				
+			}
+			
+		});
 	}
 	
 	private class OfferDriverServer extends CyclicBehaviour {
@@ -68,14 +95,14 @@ public class Drivers extends Agent{
 				ACLMessage reply = msg.createReply();
 				
 				if (true) {
-					// The requested book is available for sale. Reply with the price
+					// The requested food is available for sale. Reply with the price
 					reply.setPerformative(ACLMessage.PROPOSE);
 					// Envia como resposta o x o y o Ranking e o preço
 					reply.setContent(String.valueOf(x) + ";" +String.valueOf(y) + ";" + String.valueOf(timestamp));
 				// x;y;timestamp
 				}
 				else {
-					// The requested book is NOT available for sale.
+					// The requested food is NOT available for sale.
 					reply.setPerformative(ACLMessage.REFUSE);
 					reply.setContent("not-available");
 				}
@@ -101,6 +128,7 @@ public class Drivers extends Agent{
 					reply.setPerformative(ACLMessage.INFORM);
 					reply.setContent(String.valueOf(timestamp));
 					myAgent.send(reply);
+					writer.println("Terminei um pedido.");
 				}
 				else {
 					block();
@@ -109,5 +137,20 @@ public class Drivers extends Agent{
 		}
 		
 	}
+	
+	
+	// Put agent clean-up operations here
+		protected void takeDown() {
+			this.writer.close();
+			// Deregister from the yellow pages
+			try {
+				DFService.deregister(this);
+			}
+			catch (FIPAException fe) {
+				fe.printStackTrace();
+			}
+
+			//System.out.println("Seller-agent "+getAID().getName()+" terminating.");
+		}
 
 }
