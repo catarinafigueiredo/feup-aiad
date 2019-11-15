@@ -75,7 +75,7 @@ public class Restaurant extends Agent {
 			fe.printStackTrace();
 		}
 		
-		addBehaviour(new TickerBehaviour(this,100) {
+		addBehaviour(new TickerBehaviour(this,10) {
 			private static final long serialVersionUID = 1L;
 
 			protected void onTick() {
@@ -297,7 +297,7 @@ public class Restaurant extends Agent {
 					repliesCnt++;
 					
 					if(repliesCnt >= driverAgents.length) {
-						System.out.println("SISTEMA - driver " + reply.getSender().getName() + " selecionado.");
+						System.out.println("SISTEMA - driver " + reply.getSender().getName() + " selecionado, para entregar "+ this.food);
 						writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
 						step=3;
 					}
@@ -306,9 +306,10 @@ public class Restaurant extends Agent {
 				
 			case 3:
 				// Send the delivery order to the driver that provided the choosed offer
+				System.out.println("Step 3 "+ this.food);
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				order.addReceiver(bestDriver);
-				order.setContent(String.valueOf(this.bestDriverDist)); // deve mandar o xy do cliente para o driver entregar o pedido
+				order.setContent(String.valueOf(this.bestDriverDist)+ ";"+ clientX + ";" + clientY); // deve mandar o xy do cliente para o driver entregar o pedido
 				order.setConversationId("food-delivery");//book-trade
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);
@@ -323,6 +324,7 @@ public class Restaurant extends Agent {
 				// Receive the purchase order reply
 				reply = myAgent.receive(mt);
 				if (reply != null) {
+					
 					// Purchase order reply received
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate

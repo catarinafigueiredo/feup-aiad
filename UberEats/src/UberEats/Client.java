@@ -27,16 +27,18 @@ public class Client extends Agent {
 	private String food;
 	private int x;
 	private int y;
+	private int timestamp;
 	private String criterion;
 	
 	PrintWriter writer;
 	
 	private AID[] restaurantAgents;
 	
-	public Client(String name, int x,int y, String food, String criterion) {
+	public Client(String name, int x,int y, String food, String criterion, int timestamp) {
 		this.name=name;
 		this.x=x;
 		this.y=y;
+		this.timestamp=timestamp;
 		this.food=food;
 		this.criterion=criterion;
 		
@@ -63,7 +65,7 @@ public class Client extends Agent {
 			this.writer.println("Vou pedir " + food + ".");
 			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
-			addBehaviour(new TickerBehaviour(this, 10000) {
+			addBehaviour(new TickerBehaviour(this, this.timestamp) {
 				protected void onTick() {
 					
 					// Update the list of seller agents

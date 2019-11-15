@@ -121,8 +121,13 @@ public class Drivers extends Agent {
 			 mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
 				ACLMessage msg = myAgent.receive(mt);
 				if (msg != null) {
-					double time= Double.parseDouble(msg.getContent());
+					String[]tokens= msg.getContent().split(";");
+					int clientX=Integer.parseInt(tokens[1]);
+					int clientY=Integer.parseInt(tokens[2]);
+					double time= Double.parseDouble(tokens[0]);
 					timestamp += time;
+					x=clientX;
+					y=clientY;
 					ACLMessage reply = msg.createReply();
 					// o comprador deve enviar as suas coordenadas 
 					reply.setPerformative(ACLMessage.INFORM);

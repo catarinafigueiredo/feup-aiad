@@ -53,7 +53,7 @@ public class ParseFiles {
 				String[] arr = line.split("/");
 				String[] arr2 = arr[1].split("-");
 				
-				Client c= new Client(arr[0],Integer.parseInt(arr2[0]),Integer.parseInt(arr2[1]),arr[2],arr[3]);
+				Client c= new Client(arr[0],Integer.parseInt(arr2[0]),Integer.parseInt(arr2[1]),arr[2],arr[3],Integer.parseInt(arr[4]));
 				clients.add(c);
 				line = reader.readLine();
 			}
