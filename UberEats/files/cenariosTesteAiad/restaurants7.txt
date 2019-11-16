@@ -1,0 +1,6 @@
+PizzaHut/2-12/5/pizza-10;massa-7
+SenhorAlberto/28-2/2/pizza-4;massa-5;bacalhau-7
+MisterPizza/20-12/5/pizza-9
+Telepizza/28-2/4/pizza-8;massa-5
+Tasqueira/28-20/4/bife-9;bacalhau-15
+Mcdonald's/1-9/5/cheeseburger-3;batatas-1
