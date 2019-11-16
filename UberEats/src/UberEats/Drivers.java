@@ -1,6 +1,7 @@
 package UberEats;
 
-import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /*
  * class Drivers
@@ -9,7 +10,6 @@ import java.io.PrintWriter;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -24,7 +24,7 @@ public class Drivers extends Agent {
 	private int y;
 	private int timestamp;
 	
-	PrintWriter writer;
+	FileOutputStream  writer;
 	
 	public Drivers(String name,int x, int y, int timestamp){
 		this.name = name;
@@ -33,7 +33,7 @@ public class Drivers extends Agent {
 		this.timestamp = timestamp;
 		
 		try {
-			this.writer = new PrintWriter(name+".txt", "UTF-8");
+			this.writer = new FileOutputStream("driver"+name+".txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,7 +43,12 @@ public class Drivers extends Agent {
 	}
 	protected void setup() {
 		//System.out.println("Driver "+ getAID().getName()+" pronto.");
-		this.writer.println("Estou pronto para entregar pedidos.");
+		
+			try {
+				this.writer.write("Estou pronto para entregar pedidos.\n".getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		
 		// Register the DRIVER service in the yellow pages
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -65,10 +70,8 @@ public class Drivers extends Agent {
 		
 		addBehaviour(new DeliverFoodServer());
 		
-		addBehaviour(new TickerBehaviour(this,30000) {
-			/**
-			 * 
-			 */
+		/*addBehaviour(new TickerBehaviour(this,30000) {
+			
 			private static final long serialVersionUID = 1L;
 
 			protected void onTick() {
@@ -77,13 +80,11 @@ public class Drivers extends Agent {
 				
 			}
 			
-		});
+		});*/
 	}
 	
 	private class OfferDriverServer extends CyclicBehaviour {
-		/**
-		 * 
-		 */
+		
 		private static final long serialVersionUID = 1L;
 
 		public void action() {
@@ -94,18 +95,18 @@ public class Drivers extends Agent {
 				
 				ACLMessage reply = msg.createReply();
 				
-				if (true) {
+				//if (true) {
 					// The requested food is available for sale. Reply with the price
 					reply.setPerformative(ACLMessage.PROPOSE);
 					// Envia como resposta o x o y o Ranking e o preço
 					reply.setContent(String.valueOf(x) + ";" +String.valueOf(y) + ";" + String.valueOf(timestamp));
 				// x;y;timestamp
-				}
+				/*}
 				else {
 					// The requested food is NOT available for sale.
 					reply.setPerformative(ACLMessage.REFUSE);
 					reply.setContent("not-available");
-				}
+				}*/
 				myAgent.send(reply);
 			}
 			else {
@@ -133,7 +134,11 @@ public class Drivers extends Agent {
 					reply.setPerformative(ACLMessage.INFORM);
 					reply.setContent(String.valueOf(timestamp));
 					myAgent.send(reply);
-					writer.println("Terminei um pedido.");
+					try {
+						writer.write("Terminei um pedido.\n".getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 				else {
 					block();
@@ -146,7 +151,11 @@ public class Drivers extends Agent {
 	
 	// Put agent clean-up operations here
 		protected void takeDown() {
-			this.writer.close();
+			try {
+				this.writer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			// Deregister from the yellow pages
 			try {
 				DFService.deregister(this);

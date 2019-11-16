@@ -17,6 +17,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.Math; 
@@ -30,7 +32,7 @@ public class Client extends Agent {
 	private int timestamp;
 	private String criterion;
 	
-	PrintWriter writer;
+	FileOutputStream writer;
 	
 	private AID[] restaurantAgents;
 	
@@ -43,7 +45,7 @@ public class Client extends Agent {
 		this.criterion=criterion;
 		
 		try {
-			this.writer = new PrintWriter(name+".txt", "UTF-8");
+			this.writer = new FileOutputStream("client"+name+".txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,13 +58,21 @@ public class Client extends Agent {
 	@Override
 	protected void setup() {
 		//System.out.println("Cliente "+ getAID().getName()+" pronto.");
-		this.writer.println("Estou pronto para pedir.");
+		try {
+			this.writer.write("Estou pronto para pedir.\n".getBytes());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		Object[] args= getArguments();
 		if (true) {
 			
 			//System.out.println("\nIniciando um pedido --------------------------------------");
 			//System.out.println(getAID().getName() + " - vou pedir " + food + ".");
-			this.writer.println("Vou pedir " + food + ".");
+			try {
+				this.writer.write(("Vou pedir " + food + ".\n").getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
 			addBehaviour(new TickerBehaviour(this, this.timestamp) {
@@ -95,7 +105,11 @@ public class Client extends Agent {
 		else {
 			// Make the agent terminate
 			//System.out.println("No food available");
-			this.writer.println("O que quero nao esta disponivel.");
+			try {
+				this.writer.write("O que quero nao esta disponivel.\n".getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			doDelete();
 		}
 	}
@@ -105,8 +119,13 @@ public class Client extends Agent {
 	protected void takeDown() {
 		// Printout a dismissal message
 		//System.out.println(getAID().getName() + " - o meu pedido foi feito! Aguardando entrega...");
-		this.writer.println("O meu pedido foi feito! Aguardando entrega...");
-		this.writer.close();
+		try {
+			this.writer.write("O meu pedido foi feito! Aguardando entrega...\n".getBytes());
+			this.writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -194,7 +213,11 @@ public class Client extends Agent {
 					                break; 
 					            default:
 					                //System.out.println("ERROR! Criterio nao esperado!");
-					                writer.println("ERRO! O meu criterio nao existe!");
+								try {
+									writer.write("ERRO! O meu criterio nao existe!\n".getBytes());
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
 					        }
 					}
 					repliesCnt++;

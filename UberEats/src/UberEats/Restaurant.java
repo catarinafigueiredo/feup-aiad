@@ -6,7 +6,8 @@ package UberEats;
  * - Responsavel por implementar o agente Restaurant. */
 
 import java.util.Hashtable;
-import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.Math;
 
 import jade.core.AID;
@@ -31,7 +32,7 @@ public class Restaurant extends Agent {
 	private int x;
 	private int y;
 	
-	PrintWriter writer;
+	FileOutputStream writer;
 	
 	private String name;
 	
@@ -47,7 +48,7 @@ public class Restaurant extends Agent {
 		this.catalogue = catalogue;
 		
 		try {
-			this.writer = new PrintWriter(name+".txt", "UTF-8");
+			this.writer = new FileOutputStream("restaurant"+name+".txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,7 +62,11 @@ public class Restaurant extends Agent {
 	protected void setup() {
 		
 		//System.out.println("Restaurante " + getAID().getName() + " pronto.");
-		this.writer.println(this.name+" pronto.");
+		try {
+			this.writer.write((this.name+" pronto.\n").getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
@@ -98,10 +103,8 @@ public class Restaurant extends Agent {
 			}
 		});
 		
-		addBehaviour(new TickerBehaviour(this,30000) {
-			/**
-			 * 
-			 */
+		/*addBehaviour(new TickerBehaviour(this,30000) {
+			
 			private static final long serialVersionUID = 1L;
 
 			protected void onTick() {
@@ -110,7 +113,7 @@ public class Restaurant extends Agent {
 				
 			}
 			
-		});
+		});*/
 
 		// Add the behaviour serving queries from buyer agents
 		addBehaviour(new OfferRequestsServer());
@@ -123,12 +126,13 @@ public class Restaurant extends Agent {
 
 	// Put agent clean-up operations here
 	protected void takeDown() {
-		this.writer.close();
+		
 		// Deregister from the yellow pages
 		try {
+			this.writer.close();
 			DFService.deregister(this);
 		}
-		catch (FIPAException fe) {
+		catch (FIPAException | IOException fe) {
 			fe.printStackTrace();
 		}
 
@@ -221,8 +225,8 @@ public class Restaurant extends Agent {
 
 		private static final long serialVersionUID = 1L;
 		private AID bestDriver;
-		private int bestDriverX;
-		private int bestDriverY;
+		//private int bestDriverX;
+		//private int bestDriverY;
 		private int bestDriverTimestamp;
 		private double bestDriverDist;
 		String food;
@@ -250,7 +254,11 @@ public class Restaurant extends Agent {
 				// Send the cfp to all drivers
 				
 				//System.out.println(getAID().getName() + " contactando drivers...");
-				writer.println("Pagamento feito. Iniciando contacto com driver para fazer a entrega...");
+				try {
+					writer.write("Pagamento feito. Iniciando contacto com driver para fazer a entrega...\n".getBytes());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 				
 				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
 				for (int i = 0; i < driverAgents.length; ++i) {
@@ -286,8 +294,8 @@ public class Restaurant extends Agent {
 						drivTS+=totalDist;
 						
 						if(this.bestDriver==null || drivTS<this.bestDriverTimestamp) {
-							this.bestDriverX = drivX;
-							this.bestDriverY = drivY;
+							//this.bestDriverX = drivX;
+							//this.bestDriverY = drivY;
 							this.bestDriverTimestamp = drivTS;
 							this.bestDriverDist = totalDist;
 							
@@ -298,7 +306,11 @@ public class Restaurant extends Agent {
 					
 					if(repliesCnt >= driverAgents.length) {
 						System.out.println("SISTEMA - driver " + reply.getSender().getName() + " selecionado, para entregar "+ this.food);
-						writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
+						try {
+							writer.write(("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.\n").getBytes());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						step=3;
 					}
 				}
@@ -346,7 +358,6 @@ public class Restaurant extends Agent {
 
 		@Override
 		public boolean done() {
-			// TODO Auto-generated method stub
 		
 				if (step == 3 && bestDriver == null) {
 					System.out.println("Attempt failed: " + food + " not available for sale.");
