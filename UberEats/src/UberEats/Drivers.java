@@ -126,16 +126,23 @@ public class Drivers extends Agent {
 					int clientX=Integer.parseInt(tokens[1]);
 					int clientY=Integer.parseInt(tokens[2]);
 					double time= Double.parseDouble(tokens[0]);
+					String clientName = tokens[3];
+					String food = tokens[4];
 					timestamp += time;
 					x=clientX;
 					y=clientY;
+					try {
+						writer.write(("Fiquei encarregue de entregar "+food + " do restaurante "+msg.getSender().getName()+" ao cliente "+clientName +".\n").getBytes());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					ACLMessage reply = msg.createReply();
 					// o comprador deve enviar as suas coordenadas 
 					reply.setPerformative(ACLMessage.INFORM);
 					reply.setContent(String.valueOf(timestamp));
 					myAgent.send(reply);
 					try {
-						writer.write("Terminei um pedido.\n".getBytes());
+						writer.write(("Terminei o pedido do cliente "+clientName).getBytes());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

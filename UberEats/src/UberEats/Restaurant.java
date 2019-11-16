@@ -322,7 +322,7 @@ public class Restaurant extends Agent {
 				// Send the delivery order to the driver that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				order.addReceiver(bestDriver);
-				order.setContent(String.valueOf(this.bestDriverDist)+ ";"+ clientX + ";" + clientY); // deve mandar o xy do cliente para o driver entregar o pedido
+				order.setContent(String.valueOf(this.bestDriverDist)+ ";"+ clientX + ";" + clientY + ";" + clientName + ";" + food); // deve mandar o xy do cliente para o driver entregar o pedido
 				order.setConversationId("food-delivery");//book-trade
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);
