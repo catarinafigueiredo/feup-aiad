@@ -210,7 +210,7 @@ public class Restaurant extends Agent {
 				reply.setPerformative(ACLMessage.INFORM);
 				reply.setContent("Order in process.");
 				myAgent.send(reply);
-				myAgent.addBehaviour(new FindDrivers(food, clientX, clientY));
+				myAgent.addBehaviour(new FindDrivers(food, clientX, clientY, msg.getSender().getName()));
 				
 			}
 			else {
@@ -230,6 +230,7 @@ public class Restaurant extends Agent {
 		private int bestDriverTimestamp;
 		private double bestDriverDist;
 		String food;
+		String clientName;
 		int clientX;
 		int clientY;
 		double distClientRest;
@@ -238,10 +239,11 @@ public class Restaurant extends Agent {
 		private int repliesCnt = 0;
 		private MessageTemplate mt;
 		
-		FindDrivers(String food, int clientX, int clientY) {
+		FindDrivers(String food, int clientX, int clientY, String clientName) {
 			this.food = food;
 			this.clientX = clientX;
 			this.clientY = clientY;
+			this.clientName = clientName;
 			
 			this.distClientRest = Math.sqrt((y -clientY ) * (y - clientY) + (x - clientX) * (x - clientX));
 		}
@@ -305,9 +307,9 @@ public class Restaurant extends Agent {
 					repliesCnt++;
 					
 					if(repliesCnt >= driverAgents.length) {
-						System.out.println("SISTEMA - driver " + reply.getSender().getName() + " selecionado, para entregar "+ this.food);
+						System.out.println("SISTEMA - driver " + reply.getSender().getName() + " selecionado para entregar "+ this.food + " a " + clientName);
 						try {
-							writer.write(("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.\n").getBytes());
+							writer.write(("Foi selecionado o driver "+reply.getSender().getName() + " para entregar "+ this.food + " a " + clientName+".\n").getBytes());
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -318,7 +320,6 @@ public class Restaurant extends Agent {
 				
 			case 3:
 				// Send the delivery order to the driver that provided the choosed offer
-				System.out.println("Step 3 "+ this.food);
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				order.addReceiver(bestDriver);
 				order.setContent(String.valueOf(this.bestDriverDist)+ ";"+ clientX + ";" + clientY); // deve mandar o xy do cliente para o driver entregar o pedido
@@ -340,7 +341,7 @@ public class Restaurant extends Agent {
 					// Purchase order reply received
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate
-						System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " em " + reply.getContent() + ".");
+						System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " a " + clientName + " em " + reply.getContent() + ".");
 						//writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
 					}
 					else {
