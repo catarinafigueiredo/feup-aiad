@@ -64,12 +64,33 @@ public class Client extends Agent {
 			e1.printStackTrace();
 		}
 		Object[] args= getArguments();
-		if (true) {
+		//if (true) {
 			
 			//System.out.println("\nIniciando um pedido --------------------------------------");
 			//System.out.println(getAID().getName() + " - vou pedir " + food + ".");
+		String str = "Vou pedir " + food + " e ";
+		
+		switch(criterion) 
+        { 
+            case "cheaper": 
+            	str += "quero pagar o menos possivel.\n";
+                break; 
+            case "faster": 
+            	str += " quero que o meu pedido seja entregue o mais rapido possivel.\n";
+                break; 
+            case "quality": 
+            	str += " quero a melhor qualidade possivel.\n";
+                break;
+            default:
 			try {
-				this.writer.write(("Vou pedir " + food + ".\n").getBytes());
+				writer.write("ERRO! O meu criterio nao existe!\n".getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+		
+			try {
+				this.writer.write(str.getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -101,7 +122,7 @@ public class Client extends Agent {
 				}
 			} );
 			//addBehaviour(new RequestPerformer());
-		}
+		/*}
 		else {
 			// Make the agent terminate
 			//System.out.println("No food available");
@@ -111,7 +132,7 @@ public class Client extends Agent {
 				e.printStackTrace();
 			}
 			doDelete();
-		}
+		}*/
 	}
 
 
@@ -197,20 +218,20 @@ public class Client extends Agent {
 										bestSeller = reply.getSender();
 									}
 					                break; 
-					            case "BetterQuality": 
+					            case "quality": 
 					            	if (bestSeller == null ||  RestaurantRanking < betterQuality) {
 										// This is the best offer at present
 										bestPrice = price;
 										bestSeller = reply.getSender();
 									}
 					                break; 
-					            case "BetterPriceQuality": 
+					            /*case "BetterPriceQuality": 
 					            	if (bestSeller == null ||  RestaurantRanking < betterQuality) {
 										// This is the best offer at present
 										bestPrice = price;
 										bestSeller = reply.getSender();
 									}
-					                break; 
+					                break; */
 					            default:
 					                //System.out.println("ERROR! Criterio nao esperado!");
 								try {
@@ -234,6 +255,11 @@ public class Client extends Agent {
 			case 2:
 				
 				System.out.println("SISTEMA - melhor restaurante para o pedido " + getAID().getName() + " e " + bestSeller.getName() + ".");
+				try {
+					writer.write(("O restaurante escolhido para o meu pedido foi " + bestSeller.getName() + " e fica por " + bestPrice + " euros.\n").getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				// Send the purchase order to the seller that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				
@@ -262,13 +288,13 @@ public class Client extends Agent {
 						System.out.println("ERRO! Restaurante nao esta a funcionar como esperado!");
 					}
 
-					step = 4;
+					//step = 4;
 				}
 				else {
 					block();
 				}
 				break;
-			case 4:   // só recebe a mensagem com a informação do driver que vai levar a comida 
+			/*case 4:   // só recebe a mensagem com a informação do driver que vai levar a comida 
 				// fica à espera que o restaurante mande o driver entregar a comida
 				// Receive the purchase order reply
 				reply = myAgent.receive(mt);
@@ -290,7 +316,7 @@ public class Client extends Agent {
 				else {
 					block();
 				}
-				break;
+				break;*/
 			}        
 		}
 
