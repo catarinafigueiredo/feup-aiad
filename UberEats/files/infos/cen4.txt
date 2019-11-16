@@ -1,2 +1,2 @@
-1 cliente, 2 restaurantes, um mais barato que o outro.
+1 cliente, 4 restaurantes, um mais barato que o outro.
 o criterio sendo cheaper tem que ser selecionado o restaurante mais barato.

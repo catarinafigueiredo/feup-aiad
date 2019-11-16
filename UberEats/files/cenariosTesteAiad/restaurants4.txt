@@ -1,2 +1,4 @@
 PizzaHut/2-12/5/pizza-10;massa-7
-MisterPizza/20-12/5/pizza-9;massa-5
+SenhorAlberto/28-2/2/pizza-4;massa-5
+MisterPizza/20-12/5/pizza-9
+Telepizza/28-2/4/pizza-8;massa-5
