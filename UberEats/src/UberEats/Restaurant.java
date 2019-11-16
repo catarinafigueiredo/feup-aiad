@@ -294,6 +294,7 @@ public class Restaurant extends Agent {
 						// Pode fazer o pedido 
 						String[]tokens= reply.getContent().split(";");
 						
+						
 						int drivX=Integer.parseInt(tokens[0]);
 						int drivY=Integer.parseInt(tokens[1]);
 						int drivTS=Integer.parseInt(tokens[2]);
@@ -301,6 +302,8 @@ public class Restaurant extends Agent {
 						double distRestDriv = Math.sqrt((y -drivY ) * (y - drivY) + (x - drivX) * (x - drivX));
 						double totalDist = this.distClientRest + distRestDriv;
 						drivTS+=totalDist;
+						
+						//System.out.println(reply.getSender().getName()+" - "+drivTS+" contra "+this.bestDriverTimestamp);
 						
 						if(this.bestDriver==null || drivTS<this.bestDriverTimestamp) {
 							//this.bestDriverX = drivX;
@@ -314,9 +317,9 @@ public class Restaurant extends Agent {
 					repliesCnt++;
 					
 					if(repliesCnt >= driverAgents.length) {
-						System.out.println("SISTEMA - driver " + reply.getSender().getName() + " selecionado para entregar "+ this.food + " a " + clientName);
+						System.out.println("SISTEMA - driver " + bestDriver.getName() + " selecionado para entregar "+ this.food + " a " + clientName);
 						try {
-							writer.write(("Foi selecionado o driver "+reply.getSender().getName() + " para entregar "+ this.food + " a " + clientName+".\n").getBytes());
+							writer.write(("Foi selecionado o driver "+bestDriver.getName() + " para entregar "+ this.food + " a " + clientName+".\n").getBytes());
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
