@@ -142,7 +142,7 @@ public class Drivers extends Agent {
 					reply.setContent(String.valueOf(timestamp));
 					myAgent.send(reply);
 					try {
-						writer.write(("Terminei o pedido do cliente "+clientName).getBytes());
+						writer.write(("Terminei o pedido do cliente "+clientName+".\n").getBytes());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
