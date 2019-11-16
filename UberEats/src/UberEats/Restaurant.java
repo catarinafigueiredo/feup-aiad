@@ -205,6 +205,13 @@ public class Restaurant extends Agent {
 				String food = tokens[0];
 				int clientX=Integer.parseInt(tokens[1]);
 				int clientY=Integer.parseInt(tokens[2]);
+				
+				try {
+					writer.write(("Cliente " + msg.getSender().getName() +" pediu " + food +".\n").getBytes());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
 				ACLMessage reply = msg.createReply();
 
 				reply.setPerformative(ACLMessage.INFORM);
@@ -257,7 +264,7 @@ public class Restaurant extends Agent {
 				
 				//System.out.println(getAID().getName() + " contactando drivers...");
 				try {
-					writer.write("Pagamento feito. Iniciando contacto com driver para fazer a entrega...\n".getBytes());
+					writer.write(("Cliente " + clientName +" efetuou pagamento. Iniciando contacto com drivers para fazer a entrega...\n").getBytes());
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
