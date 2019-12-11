@@ -111,6 +111,21 @@ public class caseGenerator {
 		}
 		
 		// GERAR DRIVERS
+		for(int i = 0; i < nDrivers; i++) {
+			
+			int xD = getRandomNumberInRange(1,99);
+			int yD = getRandomNumberInRange(1,99);
+			
+			int initTemp = getRandomNumberInRange(0,50);
+			
+			String lineD = "D"+(i+1)+"/"+xD+"-"+yD+"/"+initTemp+"\n";
+			
+			try {
+				this.writerD.write(lineD.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public int getClientes() {
