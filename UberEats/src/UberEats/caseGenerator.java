@@ -1,11 +1,12 @@
 package UberEats;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Random;
 
 public class caseGenerator {
 	
-	private String fileName;
+	private String filePathName;
 	
 	private int nClientes;
 	private int nRests;
@@ -24,12 +25,12 @@ public class caseGenerator {
 	FileOutputStream writerD;
 	
 	public caseGenerator(int minC, int maxC, int minR, int maxR, int minD, int maxD) {
-		this.fileName = "generatedCase";
+		this.filePathName = "files/cenariosTesteAiad/generatedCase";
 		
 		try {
-			this.writerC = new FileOutputStream(fileName+"C.txt");
-			this.writerR = new FileOutputStream(fileName+"R.txt");
-			this.writerD = new FileOutputStream(fileName+"D.txt");
+			this.writerC = new FileOutputStream(filePathName+"C.txt");
+			this.writerR = new FileOutputStream(filePathName+"R.txt");
+			this.writerD = new FileOutputStream(filePathName+"D.txt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,6 +61,38 @@ public class caseGenerator {
 	
 	public void generateFile() {
 		// GERAR CLIENTES
+		int time = 0;
+		for(int i = 0; i < nClientes; i++) {
+			time += 50;
+			
+			int xC = getRandomNumberInRange(1,99);
+			int yC = getRandomNumberInRange(1,99);
+			
+			int crit = getRandomNumberInRange(0,2);
+			
+			String lineC = "C"+(i+1)+"/"+xC+"-"+yC+"/"+"food"+"/";
+			
+			switch(crit) {
+			case 0:
+				lineC+="faster";
+				break;
+			case 1:
+				lineC+="cheaper";
+				break;
+			case 2:
+				lineC+="quality";
+				break;
+			}
+			
+			lineC+="/"+time+"\n";
+			
+			try {
+				this.writerC.write(lineC.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		// GERAR RESTAURANTES
 		// GERAR DRIVERS
 	}

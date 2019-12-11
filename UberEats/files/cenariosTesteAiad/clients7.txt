@@ -1,5 +1,5 @@
-Ana/1-2/pizza/cheaper/100
-Lucas/11-27/cheeseburger/cheaper/200
-Rita/1-27/massa/faster/300
-Miguel/14-17/pizza/quality/400
-Catarina/30-7/bacalhau/faster/500
+Ana/1-2/pizza/cheaper/50
+Lucas/11-27/cheeseburger/cheaper/100
+Rita/1-27/massa/faster/150
+Miguel/14-17/pizza/quality/200
+Catarina/30-7/bacalhau/faster/250

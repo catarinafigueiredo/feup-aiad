@@ -18,15 +18,16 @@ public class EcoSystem {
 	public static void main(String[] args) {
 		
 		// fazer um for com 1000 iteracoes
-		/*for(int i = 0; i < 1000; i++) {
-			System.out.println("ITE " +i+" -------------------------\n");
+		for(int i = 0; i < 1000; i++) {
+			//System.out.println("ITE " +i+" -------------------------\n");
 			
 			caseGenerator gen = new caseGenerator(5,20,  5,15,  10,15);
+			gen.generateFile();
 			
 			/*System.out.println("nClientes = " +gen.getClientes());
 			System.out.println("nRests = " +gen.getRests());
 			System.out.println("nDrivers = " +gen.getDrivers()+"\n");*/
-		//}
+		}
 		
 		ParseFiles parseFiles = new ParseFiles();
 		
