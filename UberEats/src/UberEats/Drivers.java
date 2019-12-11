@@ -157,21 +157,20 @@ public class Drivers extends Agent {
 	
 	
 	// Put agent clean-up operations here
-		protected void takeDown() {
-			try {
-				this.writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			// Deregister from the yellow pages
-			try {
-				DFService.deregister(this);
-			}
-			catch (FIPAException fe) {
-				fe.printStackTrace();
-			}
+	@Override
+	protected void takeDown() {
 
-			//System.out.println("Seller-agent "+getAID().getName()+" terminating.");
-		}
+		// Deregister from the yellow pages
+				try {
+					this.writer.close();
+					DFService.deregister(this);
+				}
+				catch (FIPAException | IOException fe) {
+					fe.printStackTrace();
+				}
+
+		super.takeDown();
+
+	}
 
 }

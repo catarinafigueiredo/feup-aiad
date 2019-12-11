@@ -125,18 +125,20 @@ public class Restaurant extends Agent {
 	
 
 	// Put agent clean-up operations here
+	@Override
 	protected void takeDown() {
-		
-		// Deregister from the yellow pages
-		try {
-			this.writer.close();
-			DFService.deregister(this);
-		}
-		catch (FIPAException | IOException fe) {
-			fe.printStackTrace();
-		}
 
-		//System.out.println("Seller-agent "+getAID().getName()+" terminating.");
+		// Deregister from the yellow pages
+				try {
+					this.writer.close();
+					DFService.deregister(this);
+				}
+				catch (FIPAException | IOException fe) {
+					fe.printStackTrace();
+				}
+
+		super.takeDown();
+
 	}
 
 	/**

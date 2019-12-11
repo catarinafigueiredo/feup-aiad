@@ -137,16 +137,18 @@ public class Client extends Agent {
 
 
 	// Put agent clean-up operations here
+	@Override
 	protected void takeDown() {
-		// Printout a dismissal message
-		//System.out.println(getAID().getName() + " - o meu pedido foi feito! Aguardando entrega...");
+
 		try {
 			this.writer.write("O meu pedido foi feito! Aguardando entrega...\n".getBytes());
 			this.writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
+		super.takeDown();
+
 	}
 
 	/**
