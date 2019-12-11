@@ -1,0 +1,1 @@
+cenario criado de forma random para povoar ficheiro excel para problema de classificacao

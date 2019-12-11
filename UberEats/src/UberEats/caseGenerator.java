@@ -1,5 +1,6 @@
 package UberEats;
 
+import java.io.FileOutputStream;
 import java.util.Random;
 
 public class caseGenerator {
@@ -18,8 +19,20 @@ public class caseGenerator {
 	private int maxRests;
 	private int maxDrivers;
 	
+	FileOutputStream writerC;
+	FileOutputStream writerR;
+	FileOutputStream writerD;
+	
 	public caseGenerator(int minC, int maxC, int minR, int maxR, int minD, int maxD) {
-		this.fileName = "generatedCase.txt";
+		this.fileName = "generatedCase";
+		
+		try {
+			this.writerC = new FileOutputStream(fileName+"C.txt");
+			this.writerR = new FileOutputStream(fileName+"R.txt");
+			this.writerD = new FileOutputStream(fileName+"D.txt");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		minClientes=minC;
 		minRests=minR;
@@ -43,6 +56,12 @@ public class caseGenerator {
 
 		Random r = new Random();
 		return r.nextInt((max - min) + 1) + min;
+	}
+	
+	public void generateFile() {
+		// GERAR CLIENTES
+		// GERAR RESTAURANTES
+		// GERAR DRIVERS
 	}
 	
 	public int getClientes() {
