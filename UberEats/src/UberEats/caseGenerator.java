@@ -20,6 +20,8 @@ public class caseGenerator {
 	private int maxRests;
 	private int maxDrivers;
 	
+	private String[] ementa = {"pizza", "lasanha", "massa", "prego no prato", "hamburguer", "francesinha"};
+	
 	FileOutputStream writerC;
 	FileOutputStream writerR;
 	FileOutputStream writerD;
@@ -69,8 +71,9 @@ public class caseGenerator {
 			int yC = getRandomNumberInRange(1,99);
 			
 			int crit = getRandomNumberInRange(0,2);
+			int food = getRandomNumberInRange(0,5);
 			
-			String lineC = "C"+(i+1)+"/"+xC+"-"+yC+"/"+"food"+"/";
+			String lineC = "C"+(i+1)+"/"+xC+"-"+yC+"/"+ementa[food]+"/";
 			
 			switch(crit) {
 			case 0:
@@ -101,7 +104,16 @@ public class caseGenerator {
 			
 			int rat = getRandomNumberInRange(1,5);
 			
-			String lineR = "R"+(i+1)+"/"+xR+"-"+yR+"/"+rat+"/food\n";
+			String lineR = "R"+(i+1)+"/"+xR+"-"+yR+"/"+rat+"/";
+			
+			for(int j = 0; j<ementa.length;j++) {
+				if(j==ementa.length-1) {
+					lineR+=ementa[j]+"-"+getRandomNumberInRange(5,13)+"\n";
+				}
+				else {
+					lineR+=ementa[j]+"-"+getRandomNumberInRange(5,13)+";";
+				}
+			}
 			
 			try {
 				this.writerR.write(lineR.getBytes());
