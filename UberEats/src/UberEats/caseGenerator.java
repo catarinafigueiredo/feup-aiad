@@ -94,6 +94,22 @@ public class caseGenerator {
 		}
 		
 		// GERAR RESTAURANTES
+		for(int i = 0; i < nRests; i++) {
+			
+			int xR = getRandomNumberInRange(1,99);
+			int yR = getRandomNumberInRange(1,99);
+			
+			int rat = getRandomNumberInRange(1,5);
+			
+			String lineR = "R"+(i+1)+"/"+xR+"-"+yR+"/"+rat+"/food\n";
+			
+			try {
+				this.writerR.write(lineR.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		// GERAR DRIVERS
 	}
 	
