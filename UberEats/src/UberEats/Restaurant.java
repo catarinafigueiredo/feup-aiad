@@ -355,7 +355,7 @@ public class Restaurant extends Agent {
 						// Purchase successful. We can terminate
 						System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " a " + clientName + " em " + reply.getContent() + ".");
 						//writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
-						//myAgent.doDelete();
+						myAgent.doDelete();
 					}
 					else {
 						System.out.println("Attempt failed: restaurant not working right.");
