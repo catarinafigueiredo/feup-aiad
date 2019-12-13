@@ -16,11 +16,11 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-import java.io.FileNotFoundException;
+/*import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.UnsupportedEncodingException;*/
 import java.lang.Math; 
 
 public class Client extends Agent {
@@ -51,8 +51,29 @@ public class Client extends Agent {
 		}*/
 	}
 	
+	public int calcQuad() {
+		if(((x>=0)&&(x<=50))&&((y>=0)&&(y<=50))) {
+			return 1;
+		}
+		else if(((x>=50)&&(x<=100))&&((y>=0)&&(y<=50))) {
+			return 2;
+		}
+		else if(((x>=50)&&(x<=100))&&((y>=50)&&(y<=100))) {
+			return 3;
+		}
+		else if(((x>=0)&&(x<=50))&&((y>=50)&&(y<=100))) {
+			return 4;
+		}
+		
+		return -1;
+	}
+	
 	public String getClientName() {
 		return this.name;
+	}
+	
+	public String getCriterion() {
+		return this.criterion;
 	}
 	
 	@Override
@@ -63,12 +84,12 @@ public class Client extends Agent {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}*/
-		Object[] args= getArguments();
+		//Object[] args= getArguments();
 		//if (true) {
 			
 			//System.out.println("\nIniciando um pedido --------------------------------------");
 			//System.out.println(getAID().getName() + " - vou pedir " + food + ".");
-		String str = "Vou pedir " + food + " e ";
+		/*String str = "Vou pedir " + food + " e ";
 		
 		switch(criterion) 
         { 
@@ -80,14 +101,14 @@ public class Client extends Agent {
                 break; 
             case "quality": 
             	str += " quero a melhor qualidade possivel.\n";
-                break;
+                break;*/
             /*default:
 			try {
 				writer.write("ERRO! O meu criterio nao existe!\n".getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}*/
-        }
+        //}
 		
 			/*try {
 				this.writer.write(str.getBytes());

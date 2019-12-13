@@ -6,8 +6,8 @@ package UberEats;
  * - Responsavel por implementar o agente Restaurant. */
 
 import java.util.Hashtable;
-import java.io.FileOutputStream;
-import java.io.IOException;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
 import java.lang.Math;
 
 import jade.core.AID;
@@ -56,6 +56,23 @@ public class Restaurant extends Agent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}*/
+	}
+	
+	public int calcQuad() {
+		if(((x>=0)&&(x<=50))&&((y>=0)&&(y<=50))) {
+			return 1;
+		}
+		else if(((x>=50)&&(x<=100))&&((y>=0)&&(y<=50))) {
+			return 2;
+		}
+		else if(((x>=50)&&(x<=100))&&((y>=50)&&(y<=100))) {
+			return 3;
+		}
+		else if(((x>=0)&&(x<=50))&&((y>=50)&&(y<=100))) {
+			return 4;
+		}
+		
+		return -1;
 	}
 	
 	public void setNumClients(int num) {
@@ -156,14 +173,14 @@ public class Restaurant extends Agent {
 	/**
      This is invoked by the GUI when the user adds a new book for sale
 	 */
-	public void updateCatalogue(final String foodType, final int price) {
+	/*public void updateCatalogue(final String foodType, final int price) {
 		addBehaviour(new OneShotBehaviour() {
 			public void action() {
 				catalogue.put(foodType, new Integer(price));
 				System.out.println(foodType+" inserted into catalogue. Price = "+price);
 			}
 		} );
-	}
+	}*/
 
 	/**
 	   Inner class OfferRequestsServer.

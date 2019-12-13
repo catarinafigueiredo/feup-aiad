@@ -8,14 +8,26 @@ package UberEats;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
 public class EcoSystem {
+	
+	static FileOutputStream writer;
+	static String ss = "";
 
 	public static void main(String[] args) {
+		
+		try {
+			writer = new FileOutputStream("files/dataset.txt");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		Runtime rt = Runtime.instance();
 		Profile p1 = new ProfileImpl();
@@ -44,6 +56,193 @@ public class EcoSystem {
 			drivers = parseFiles.parseDrivers();
 			clients = parseFiles.parseClients();
 			restaurants = parseFiles.parseRestaurants();
+			
+			//try {
+				//writer.write(String.valueOf(gen.getClientes()).getBytes());
+				ss += gen.getClientes();
+				
+				int crit0=0;
+				int crit1=0;
+				int crit2=0;
+				for(int j=0; j < clients.size();j++) {
+					switch(clients.get(j).getCriterion()) 
+			        { 
+			            case "faster": 
+			            	crit0++;
+			                break; 
+			            case "cheaper": 
+			            	crit1++;
+			                break; 
+			            case "quality": 
+			            	crit2++;
+			                break;
+			        }
+				}
+				
+				float percCrit0 = ((float)crit0)/((float)gen.getClientes());
+				float percCrit1 = ((float)crit1)/((float)gen.getClientes());
+				float percCrit2 = ((float)crit2)/((float)gen.getClientes());
+				
+				ss += "	";
+				ss += percCrit0;
+				ss += "	";
+				ss += percCrit1;
+				ss += "	";
+				ss += percCrit2;
+				
+				/*writer.write("	".getBytes());
+				writer.write(Float.toString(percCrit0).getBytes());
+				writer.write("	".getBytes());
+				writer.write(Float.toString(percCrit1).getBytes());
+				writer.write("	".getBytes());
+				writer.write(Float.toString(percCrit2).getBytes());*/
+				
+				ss += "	";
+				ss += restaurants.size();
+				ss += "	";
+				
+				ss += drivers.size();
+				ss += "	";
+				
+				/*writer.write("	".getBytes());
+				writer.write(String.valueOf(restaurants.size()).getBytes());
+				writer.write("	".getBytes());
+				
+				writer.write(String.valueOf(drivers.size()).getBytes());
+				writer.write("	".getBytes());*/
+				
+				int q1 = 0;
+				int q2 = 0;
+				int q3 = 0;
+				int q4 = 0;
+				
+				for(int j=0; j < clients.size();j++) {
+					int quad = clients.get(j).calcQuad();
+					switch(quad) {
+					case 1:
+						q1++;
+						break;
+					case 2:
+						q2++;
+						break;
+					case 3:
+						q3++;
+						break;
+					case 4:
+						q4++;
+						break;
+					}
+				}
+				
+				ss += q1;
+				ss += "	";
+				ss += q2;
+				ss += "	";
+				ss += q3;
+				ss += "	";
+				ss += q4;
+				ss += "	";
+				
+				/*writer.write(String.valueOf(q1).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q2).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q3).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q4).getBytes());
+				writer.write("	".getBytes());*/
+				
+				q1 = 0;
+				q2 = 0;
+				q3 = 0;
+				q4 = 0;
+				
+				for(int j=0; j < restaurants.size();j++) {
+					int quad = restaurants.get(j).calcQuad();
+					switch(quad) {
+					case 1:
+						q1++;
+						break;
+					case 2:
+						q2++;
+						break;
+					case 3:
+						q3++;
+						break;
+					case 4:
+						q4++;
+						break;
+					}
+				}
+				
+				ss += q1;
+				ss += "	";
+				ss += q2;
+				ss += "	";
+				ss += q3;
+				ss += "	";
+				ss += q4;
+				ss += "	";
+				
+				/*writer.write(String.valueOf(q1).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q2).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q3).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q4).getBytes());
+				writer.write("	".getBytes());*/
+				
+				q1 = 0;
+				q2 = 0;
+				q3 = 0;
+				q4 = 0;
+				
+				for(int j=0; j < drivers.size();j++) {
+					int quad = drivers.get(j).calcQuad();
+					switch(quad) {
+					case 1:
+						q1++;
+						break;
+					case 2:
+						q2++;
+						break;
+					case 3:
+						q3++;
+						break;
+					case 4:
+						q4++;
+						break;
+					}
+				}
+				
+				ss += q1;
+				ss += "	";
+				ss += q2;
+				ss += "	";
+				ss += q3;
+				ss += "	";
+				ss += q4;
+				ss += "	\n";
+				
+				/*writer.write(String.valueOf(q1).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q2).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q3).getBytes());
+				writer.write("	".getBytes());
+				writer.write(String.valueOf(q4).getBytes());
+				writer.write("	\n".getBytes());*/
+				
+			/*} catch (IOException e1) {
+				e1.printStackTrace();
+			}*/
+				
+				try {
+					writer.write(ss.getBytes());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			
 			for(int j = 0; j < restaurants.size(); j++) {
 				restaurants.get(j).setNumClients(gen.getClientes());
@@ -93,6 +292,12 @@ public class EcoSystem {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		try {
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

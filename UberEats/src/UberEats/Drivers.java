@@ -1,7 +1,7 @@
 package UberEats;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
 
 /*
  * class Drivers
@@ -40,6 +40,23 @@ public class Drivers extends Agent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}*/
+	}
+	
+	public int calcQuad() {
+		if(((x>=0)&&(x<=50))&&((y>=0)&&(y<=50))) {
+			return 1;
+		}
+		else if(((x>=50)&&(x<=100))&&((y>=0)&&(y<=50))) {
+			return 2;
+		}
+		else if(((x>=50)&&(x<=100))&&((y>=50)&&(y<=100))) {
+			return 3;
+		}
+		else if(((x>=0)&&(x<=50))&&((y>=50)&&(y<=100))) {
+			return 4;
+		}
+		
+		return -1;
 	}
 	
 	public void setNumClients(int num) {
@@ -143,8 +160,8 @@ public class Drivers extends Agent {
 				int clientX=Integer.parseInt(tokens[1]);
 				int clientY=Integer.parseInt(tokens[2]);
 				double time= Double.parseDouble(tokens[0]);
-				String clientName = tokens[3];
-				String food = tokens[4];
+				//String clientName = tokens[3];
+				//String food = tokens[4];
 				timestamp += time;
 				x=clientX;
 				y=clientY;
