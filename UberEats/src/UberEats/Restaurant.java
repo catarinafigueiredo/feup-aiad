@@ -375,8 +375,20 @@ public class Restaurant extends Agent {
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);
 				// Prepare the template to get the purchase order reply
+				
+				ACLMessage reject= new ACLMessage(ACLMessage.REJECT_PROPOSAL);
+				
+				for (int i = 0; i < driverAgents.length; ++i) {
+					if(driverAgents[i]!=bestDriver)
+						reject.addReceiver(driverAgents[i]);
+				} 
+				reject.setContent("");
+				reject.setConversationId("food-delivery");
+				reject.setReplyWith("reject"+System.currentTimeMillis()); // Unique value
+				myAgent.send(reject);
 				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("food-delivery"),//book-trade
 						MessageTemplate.MatchInReplyTo(order.getReplyWith()));
+				
 				step = 4;
 				break;
 				
