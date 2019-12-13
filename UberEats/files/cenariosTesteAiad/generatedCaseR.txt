@@ -1,10 +1,6 @@
-R1/77-52/1/pizza-11;lasanha-8;massa-12;prego no prato-13;hamburguer-13;francesinha-5
-R2/74-60/1/pizza-7;lasanha-10;massa-7;prego no prato-6;hamburguer-10;francesinha-7
-R3/92-74/2/pizza-10;lasanha-8;massa-6;prego no prato-7;hamburguer-8;francesinha-7
-R4/19-15/3/pizza-12;lasanha-11;massa-10;prego no prato-7;hamburguer-10;francesinha-8
-R5/92-60/4/pizza-12;lasanha-11;massa-9;prego no prato-6;hamburguer-6;francesinha-13
-R6/73-66/3/pizza-13;lasanha-5;massa-10;prego no prato-7;hamburguer-12;francesinha-8
-R7/2-11/5/pizza-10;lasanha-11;massa-10;prego no prato-11;hamburguer-11;francesinha-9
-R8/72-37/2/pizza-8;lasanha-8;massa-6;prego no prato-13;hamburguer-13;francesinha-5
-R9/58-96/1/pizza-7;lasanha-11;massa-6;prego no prato-13;hamburguer-6;francesinha-12
-R10/20-63/5/pizza-5;lasanha-5;massa-8;prego no prato-8;hamburguer-5;francesinha-13
+R1/34-62/4/pizza-12;lasanha-11;massa-8;prego no prato-10;hamburguer-6;francesinha-8
+R2/85-6/2/pizza-9;lasanha-7;massa-12;prego no prato-11;hamburguer-11;francesinha-9
+R3/36-66/4/pizza-5;lasanha-11;massa-11;prego no prato-8;hamburguer-5;francesinha-12
+R4/23-62/4/pizza-5;lasanha-6;massa-10;prego no prato-10;hamburguer-10;francesinha-10
+R5/20-43/5/pizza-13;lasanha-12;massa-9;prego no prato-7;hamburguer-7;francesinha-9
+R6/37-53/1/pizza-12;lasanha-6;massa-11;prego no prato-13;hamburguer-9;francesinha-10

@@ -17,6 +17,10 @@ public class EcoSystem {
 
 	public static void main(String[] args) {
 		
+		Runtime rt = Runtime.instance();
+		Profile p1 = new ProfileImpl();
+		ContainerController mainContainer = rt.createMainContainer(p1);
+		
 		// fazer um for com 1000 iteracoes
 		for(int i = 0; i < 1000; i++) {
 			//System.out.println("ITE " +i+" -------------------------\n");
@@ -30,10 +34,6 @@ public class EcoSystem {
 		
 		
 			ParseFiles parseFiles = new ParseFiles();
-		
-			Runtime rt = Runtime.instance();
-			Profile p1 = new ProfileImpl();
-			ContainerController mainContainer = rt.createMainContainer(p1);
 		
 			ArrayList<Drivers> drivers = new ArrayList<Drivers>();
 			ArrayList<Client> clients = new ArrayList<Client>();
@@ -84,6 +84,12 @@ public class EcoSystem {
 				catch (StaleProxyException e) {
 					e.printStackTrace();
 				}		
+			}
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}

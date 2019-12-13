@@ -1,4 +1,0 @@
-MisterPizza pronto.
-Cliente Miguel@10.227.147.80:1099/JADE pediu pizza.
-Cliente Miguel@10.227.147.80:1099/JADE efetuou pagamento. Iniciando contacto com drivers para fazer a entrega...
-Foi selecionado o driver Tiago@10.227.147.80:1099/JADE para entregar pizza a Miguel@10.227.147.80:1099/JADE.

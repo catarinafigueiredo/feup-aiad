@@ -165,14 +165,12 @@ public class Drivers extends Agent {
 					e.printStackTrace();
 				}
 				if(receivedOrders >= numClients) {
-					//System.out.println("TERMINEI!!!");
 					myAgent.doDelete();
 				}
 			}
 			if (msg2 != null) {
 				//System.out.println("FUI REJEITADO!!!");
 				if(receivedOrders >= numClients) {
-					//System.out.println("TERMINEI!!!");
 					myAgent.doDelete();
 				}
 			}

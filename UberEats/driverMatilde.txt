@@ -1,3 +1,0 @@
-Estou pronto para entregar pedidos.
-Fiquei encarregue de entregar pizza do restaurante SenhorAlberto@10.227.147.80:1099/JADE ao cliente Ana@10.227.147.80:1099/JADE.
-Terminei o pedido do cliente Ana@10.227.147.80:1099/JADE.

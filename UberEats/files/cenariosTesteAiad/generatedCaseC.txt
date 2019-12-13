@@ -1,14 +1,12 @@
-C1/29-96/prego no prato/quality/50
-C2/20-89/prego no prato/quality/100
-C3/80-96/massa/cheaper/150
-C4/10-76/prego no prato/faster/200
-C5/17-42/francesinha/faster/250
-C6/58-35/pizza/quality/300
-C7/93-50/pizza/quality/350
-C8/93-74/massa/cheaper/400
-C9/62-10/lasanha/quality/450
-C10/72-49/massa/quality/500
-C11/21-80/massa/faster/550
-C12/82-64/francesinha/faster/600
-C13/98-87/lasanha/quality/650
-C14/33-25/prego no prato/cheaper/700
+C1/71-26/lasanha/cheaper/50
+C2/90-17/prego no prato/cheaper/100
+C3/49-16/francesinha/cheaper/150
+C4/15-17/pizza/quality/200
+C5/88-70/pizza/faster/250
+C6/56-90/hamburguer/faster/300
+C7/99-83/lasanha/cheaper/350
+C8/4-16/pizza/cheaper/400
+C9/32-54/pizza/cheaper/450
+C10/90-29/prego no prato/faster/500
+C11/72-55/massa/cheaper/550
+C12/71-26/pizza/cheaper/600

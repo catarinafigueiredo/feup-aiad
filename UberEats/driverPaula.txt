@@ -1,3 +1,0 @@
-Estou pronto para entregar pedidos.
-Fiquei encarregue de entregar massa do restaurante PizzaHut@10.227.147.80:1099/JADE ao cliente Rita@10.227.147.80:1099/JADE.
-Terminei o pedido do cliente Rita@10.227.147.80:1099/JADE.

@@ -1,4 +1,0 @@
-PizzaHut pronto.
-Cliente Rita@10.227.147.80:1099/JADE pediu massa.
-Cliente Rita@10.227.147.80:1099/JADE efetuou pagamento. Iniciando contacto com drivers para fazer a entrega...
-Foi selecionado o driver Paula@10.227.147.80:1099/JADE para entregar massa a Rita@10.227.147.80:1099/JADE.

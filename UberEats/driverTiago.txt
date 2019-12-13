@@ -1,5 +1,0 @@
-Estou pronto para entregar pedidos.
-Fiquei encarregue de entregar cheeseburger do restaurante Mcdonald's@10.227.147.80:1099/JADE ao cliente Lucas@10.227.147.80:1099/JADE.
-Terminei o pedido do cliente Lucas@10.227.147.80:1099/JADE.
-Fiquei encarregue de entregar pizza do restaurante MisterPizza@10.227.147.80:1099/JADE ao cliente Miguel@10.227.147.80:1099/JADE.
-Terminei o pedido do cliente Miguel@10.227.147.80:1099/JADE.

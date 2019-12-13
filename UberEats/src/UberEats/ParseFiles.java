@@ -19,8 +19,8 @@ public class ParseFiles {
 		BufferedReader reader;
 		
 		try {
-			//reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseD.txt"));
-			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/drivers7.txt"));
+			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseD.txt"));
+			//reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/drivers7.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {
@@ -47,8 +47,8 @@ public class ParseFiles {
 		BufferedReader reader;
 		
 		try {
-			//reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseC.txt"));
-			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/clients7.txt"));
+			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseC.txt"));
+			//reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/clients7.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {
@@ -75,8 +75,8 @@ public class ParseFiles {
 		BufferedReader reader;
 		
 		try {
-			//reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseR.txt"));
-			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/restaurants7.txt"));
+			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseR.txt"));
+			//reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/restaurants7.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {
