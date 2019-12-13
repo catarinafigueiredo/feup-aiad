@@ -278,8 +278,8 @@ public class Client extends Agent {
 						reject.addReceiver(restaurantAgents[i]);
 				} 
 				reject.setContent("");
-				reject.setConversationId("food");
-				reject.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
+				reject.setConversationId("food-trade");
+				reject.setReplyWith("reject"+System.currentTimeMillis()); // Unique value
 				myAgent.send(reject);
 				
 				// Prepare the template to get the purchase order reply

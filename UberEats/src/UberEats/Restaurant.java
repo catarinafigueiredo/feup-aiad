@@ -199,6 +199,10 @@ public class Restaurant extends Agent {
 		public void action() {
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
 			ACLMessage msg = myAgent.receive(mt);
+			
+			MessageTemplate mt2 = MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL);
+			ACLMessage msg2 = myAgent.receive(mt2);
+			
 			if (msg != null) {
 				
 				// ACCEPT_PROPOSAL Message received. Process it
@@ -221,6 +225,9 @@ public class Restaurant extends Agent {
 				myAgent.send(reply);
 				myAgent.addBehaviour(new FindDrivers(food, clientX, clientY, msg.getSender().getName()));
 				
+			}
+			if (msg2 != null) {
+				//System.out.println("YES! TA A RECEBER!!");
 			}
 			else {
 				block();
@@ -355,7 +362,7 @@ public class Restaurant extends Agent {
 						// Purchase successful. We can terminate
 						System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " a " + clientName + " em " + reply.getContent() + ".");
 						//writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
-						myAgent.doDelete();
+						//myAgent.doDelete();
 					}
 					else {
 						System.out.println("Attempt failed: restaurant not working right.");

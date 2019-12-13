@@ -143,7 +143,7 @@ public class Drivers extends Agent {
 					myAgent.send(reply);
 					try {
 						writer.write(("Terminei o pedido do cliente "+clientName+".\n").getBytes());
-						myAgent.doDelete();
+						//myAgent.doDelete();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
