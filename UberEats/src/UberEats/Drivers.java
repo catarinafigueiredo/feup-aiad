@@ -1,5 +1,10 @@
 package UberEats;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 //import java.io.FileOutputStream;
 //import java.io.IOException;
 
@@ -175,6 +180,15 @@ public class Drivers extends Agent {
 				reply.setPerformative(ACLMessage.INFORM);
 				reply.setContent(String.valueOf(timestamp));
 				myAgent.send(reply);
+				
+				File log = new File("log.txt");
+				try{
+					PrintWriter out = new PrintWriter(new FileWriter(log, true));
+					out.append(timestamp + "\n");
+					out.close();
+				}catch(IOException e){
+					System.out.println("Error creating file.");
+				}
 				/*try {
 					writer.write(("Terminei o pedido do cliente "+clientName+".\n").getBytes());
 					//myAgent.doDelete();

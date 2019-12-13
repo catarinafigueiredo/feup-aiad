@@ -9,9 +9,13 @@ import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
@@ -36,7 +40,7 @@ public class EcoSystem {
 		System.out.println("Generating data...");
 		
 		// fazer um for com 1000 iteracoes
-		for(int i = 0; i < 1000; i++) {
+		for(int i = 0; i < 150; i++) {
 			//System.out.println("ITE " +i+" -------------------------\n");
 			
 			caseGenerator gen = new caseGenerator(5,20,  5,15,  10,15);
@@ -223,7 +227,7 @@ public class EcoSystem {
 				ss += q3;
 				ss += "\t";
 				ss += q4;
-				ss += "\t\n"; // CATARINA: mete aqui entre o \t e \n a variavel dependente
+				ss += "\t"; // CATARINA: mete aqui entre o \t e \n a variavel dependente
 				
 				
 				
@@ -240,12 +244,7 @@ public class EcoSystem {
 				e1.printStackTrace();
 			}*/
 				
-				try {
-					writer.write(ss.getBytes());
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				ss = "";
+				
 			
 			for(int j = 0; j < restaurants.size(); j++) {
 				restaurants.get(j).setNumClients(gen.getClientes());
@@ -290,11 +289,23 @@ public class EcoSystem {
 				}		
 			}
 			
+			
+			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			int depVar = calcDependentVar();
+			
+			try {
+				ss += depVar + "\n";
+				writer.write(ss.getBytes());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			ss = "";
 		}
 		
 		try {
@@ -302,5 +313,32 @@ public class EcoSystem {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	static private int calcDependentVar() {
+		ArrayList<String> times = new ArrayList<String>();
+		int res = 0;
+		try {
+			File myObj = new File("log.txt");
+		    Scanner myReader = new Scanner(myObj);
+		    while (myReader.hasNextLine()) {
+		    	String line = myReader.nextLine();
+		        times.add(line);
+		    }
+		    myReader.close();
+		    myObj.delete();
+		    } catch (FileNotFoundException e) {
+		        e.printStackTrace();
+		    }
+		
+		
+		int timeIte = 5;
+		for(int it = 0; it<times.size(); it++) {
+			res+=(Integer.parseInt(times.get(it))-timeIte)/times.size();
+			
+			timeIte+=5;
+		}
+		
+		return res;
 	}
 }
