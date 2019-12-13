@@ -19,7 +19,7 @@ public class ParseFiles {
 		BufferedReader reader;
 		
 		try {
-			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/drivers1.txt"));
+			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseD.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {
@@ -46,7 +46,7 @@ public class ParseFiles {
 		BufferedReader reader;
 		
 		try {
-			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/clients1.txt"));
+			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseC.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {
@@ -73,7 +73,7 @@ public class ParseFiles {
 		BufferedReader reader;
 		
 		try {
-			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/restaurants1.txt"));
+			reader = new BufferedReader(new FileReader("files/cenariosTesteAiad/generatedCaseR.txt"));
 
 			String line = reader.readLine();
 			while (line != null) {

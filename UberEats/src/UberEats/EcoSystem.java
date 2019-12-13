@@ -43,7 +43,7 @@ public class EcoSystem {
 		clients = parseFiles.parseClients();
 		restaurants = parseFiles.parseRestaurants();
 		
-		//System.out.println("Inicializacao dos Agentes --------------------------------");
+		System.out.println("NUMEROS DE PEDIDOS = " + clients.size());
 		
 		for(int j = 0; j < drivers.size(); j++) {
 			AgentController ac0;
