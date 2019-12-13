@@ -27,7 +27,7 @@ public class Drivers extends Agent {
 	private int receivedOrders = 0;
 	private int numClients;
 	
-	FileOutputStream  writer;
+	//FileOutputStream  writer;
 	
 	public Drivers(String name,int x, int y, int timestamp){
 		this.name = name;
@@ -35,11 +35,11 @@ public class Drivers extends Agent {
 		this.y = y;
 		this.timestamp = timestamp;
 		
-		try {
+		/*try {
 			this.writer = new FileOutputStream("driver"+name+".txt");
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public void setNumClients(int num) {
@@ -54,11 +54,11 @@ public class Drivers extends Agent {
 	protected void setup() {
 		//System.out.println("Driver "+ getAID().getName()+" pronto.");
 		
-			try {
+			/*try {
 				this.writer.write("Estou pronto para entregar pedidos.\n".getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 		
 		// Register the DRIVER service in the yellow pages
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -148,22 +148,22 @@ public class Drivers extends Agent {
 				timestamp += time;
 				x=clientX;
 				y=clientY;
-				try {
+				/*try {
 					writer.write(("Fiquei encarregue de entregar "+food + " do restaurante "+msg.getSender().getName()+" ao cliente "+clientName +".\n").getBytes());
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				}*/
 				ACLMessage reply = msg.createReply();
 				// o comprador deve enviar as suas coordenadas 
 				reply.setPerformative(ACLMessage.INFORM);
 				reply.setContent(String.valueOf(timestamp));
 				myAgent.send(reply);
-				try {
+				/*try {
 					writer.write(("Terminei o pedido do cliente "+clientName+".\n").getBytes());
 					//myAgent.doDelete();
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				}*/
 				if(receivedOrders >= numClients) {
 					myAgent.doDelete();
 				}
@@ -186,13 +186,12 @@ public class Drivers extends Agent {
 
 		// Deregister from the yellow pages
 				try {
-					this.writer.close();
+					//this.writer.close();
 					DFService.deregister(this);
 				}
-				catch (IOException fe) {
+				/*catch (IOException fe) {
 					fe.printStackTrace();
-				} catch (FIPAException e) {
-					// TODO Auto-generated catch block
+				}*/ catch (FIPAException e) {
 					e.printStackTrace();
 				}
 

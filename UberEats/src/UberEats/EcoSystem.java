@@ -21,6 +21,8 @@ public class EcoSystem {
 		Profile p1 = new ProfileImpl();
 		ContainerController mainContainer = rt.createMainContainer(p1);
 		
+		System.out.println("Generating data...");
+		
 		// fazer um for com 1000 iteracoes
 		for(int i = 0; i < 1000; i++) {
 			//System.out.println("ITE " +i+" -------------------------\n");

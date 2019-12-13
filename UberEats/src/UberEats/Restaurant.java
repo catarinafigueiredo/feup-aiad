@@ -32,7 +32,7 @@ public class Restaurant extends Agent {
 	private int x;
 	private int y;
 	
-	FileOutputStream writer;
+	//FileOutputStream writer;
 	
 	private String name;
 	
@@ -51,11 +51,11 @@ public class Restaurant extends Agent {
 		this.ranking = ranking;
 		this.catalogue = catalogue;
 		
-		try {
+		/*try {
 			this.writer = new FileOutputStream("restaurant"+name+".txt");
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public void setNumClients(int num) {
@@ -72,11 +72,11 @@ public class Restaurant extends Agent {
 	protected void setup() {
 		
 		//System.out.println("Restaurante " + getAID().getName() + " pronto.");
-		try {
+		/*try {
 			this.writer.write((this.name+" pronto.\n").getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
@@ -140,13 +140,12 @@ public class Restaurant extends Agent {
 
 		// Deregister from the yellow pages
 				try {
-					this.writer.close();
+					//this.writer.close();
 					DFService.deregister(this);
 				}
-				catch (IOException fe) {
+				/*catch (IOException fe) {
 					fe.printStackTrace();
-				} catch (FIPAException e) {
-					// TODO Auto-generated catch block
+				}*/ catch (FIPAException e) {
 					e.printStackTrace();
 				}
 
@@ -239,11 +238,11 @@ public class Restaurant extends Agent {
 				int clientX=Integer.parseInt(tokens[1]);
 				int clientY=Integer.parseInt(tokens[2]);
 				
-				try {
+				/*try {
 					writer.write(("Cliente " + msg.getSender().getName() +" pediu " + food +".\n").getBytes());
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}
+				}*/
 				
 				ACLMessage reply = msg.createReply();
 
@@ -304,11 +303,11 @@ public class Restaurant extends Agent {
 				// Send the cfp to all drivers
 				
 				//System.out.println(getAID().getName() + " contactando drivers...");
-				try {
+				/*try {
 					writer.write(("Cliente " + clientName +" efetuou pagamento. Iniciando contacto com drivers para fazer a entrega...\n").getBytes());
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}
+				}*/
 				
 				ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
 				for (int i = 0; i < driverAgents.length; ++i) {
@@ -358,12 +357,12 @@ public class Restaurant extends Agent {
 					repliesCnt++;
 					
 					if(repliesCnt >= driverAgents.length) {
-						System.out.println("SISTEMA - driver " + bestDriver.getName() + " selecionado para entregar "+ this.food + " a " + clientName);
-						try {
+						//System.out.println("SISTEMA - driver " + bestDriver.getName() + " selecionado para entregar "+ this.food + " a " + clientName);
+						/*try {
 							writer.write(("Foi selecionado o driver "+bestDriver.getName() + " para entregar "+ this.food + " a " + clientName+".\n").getBytes());
 						} catch (IOException e) {
 							e.printStackTrace();
-						}
+						}*/
 						step=3;
 					}
 				}
@@ -404,7 +403,7 @@ public class Restaurant extends Agent {
 					// Purchase order reply received
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate
-						System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " a " + clientName + " em " + reply.getContent() + ".");
+						//System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " a " + clientName + " em " + reply.getContent() + ".");
 						//writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
 						//myAgent.doDelete();
 						//System.out.println(terminate);

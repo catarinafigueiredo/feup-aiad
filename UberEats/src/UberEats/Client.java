@@ -32,7 +32,7 @@ public class Client extends Agent {
 	private int timestamp;
 	private String criterion;
 	
-	FileOutputStream writer;
+	//FileOutputStream writer;
 	
 	private AID[] restaurantAgents;
 	
@@ -44,11 +44,11 @@ public class Client extends Agent {
 		this.food=food;
 		this.criterion=criterion;
 		
-		try {
+		/*try {
 			this.writer = new FileOutputStream("client"+name+".txt");
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public String getClientName() {
@@ -58,11 +58,11 @@ public class Client extends Agent {
 	@Override
 	protected void setup() {
 		//System.out.println("Cliente "+ getAID().getName()+" pronto.");
-		try {
+		/*try {
 			this.writer.write("Estou pronto para pedir.\n".getBytes());
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
+		}*/
 		Object[] args= getArguments();
 		//if (true) {
 			
@@ -81,19 +81,19 @@ public class Client extends Agent {
             case "quality": 
             	str += " quero a melhor qualidade possivel.\n";
                 break;
-            default:
+            /*default:
 			try {
 				writer.write("ERRO! O meu criterio nao existe!\n".getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
         }
 		
-			try {
+			/*try {
 				this.writer.write(str.getBytes());
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 			 
 			// Add a TickerBehaviour that schedules a request to seller agents every minute
 			addBehaviour(new TickerBehaviour(this, this.timestamp) {
@@ -140,13 +140,13 @@ public class Client extends Agent {
 	@Override
 	protected void takeDown() {
 
-		try {
+		/*try {
 			this.writer.write("O meu pedido foi feito! Aguardando entrega...\n".getBytes());
 			this.writer.close();
 			//DFService.deregister(this);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		super.takeDown();
 
@@ -235,13 +235,13 @@ public class Client extends Agent {
 										bestSeller = reply.getSender();
 									}
 					                break; */
-					            default:
+					           /* default:
 					                //System.out.println("ERROR! Criterio nao esperado!");
 								try {
 									writer.write("ERRO! O meu criterio nao existe!\n".getBytes());
 								} catch (IOException e) {
 									e.printStackTrace();
-								}
+								}*/
 					        }
 					}
 					repliesCnt++;
@@ -257,12 +257,13 @@ public class Client extends Agent {
 				
 			case 2:
 				
-				System.out.println("SISTEMA - melhor restaurante para o pedido " + getAID().getName() + " e " + bestSeller.getName() + ".");
-				try {
+				
+				//System.out.println("SISTEMA - melhor restaurante para o pedido " + getAID().getName() + " e " + bestSeller.getName() + ".");
+				/*try {
 					writer.write(("O restaurante escolhido para o meu pedido foi " + bestSeller.getName() + " e fica por " + bestPrice + " euros.\n").getBytes());
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				}*/
 				// Send the purchase order to the seller that provided the choosed offer
 				ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 				
@@ -296,7 +297,7 @@ public class Client extends Agent {
 					// Purchase order reply received
 					if (reply.getPerformative() == ACLMessage.INFORM) {
 						// Purchase successful. We can terminate
-						System.out.println("SISTEMA - " + getAID().getName() + " comprou " + food + " do restaurante " + reply.getSender().getName() + ".");
+						//System.out.println("SISTEMA - " + getAID().getName() + " comprou " + food + " do restaurante " + reply.getSender().getName() + ".");
 						myAgent.doDelete();
 					}
 					else {
