@@ -29,54 +29,54 @@ public class EcoSystem {
 			System.out.println("nDrivers = " +gen.getDrivers()+"\n");*/
 		
 		
-		ParseFiles parseFiles = new ParseFiles();
+			ParseFiles parseFiles = new ParseFiles();
 		
-		Runtime rt = Runtime.instance();
-		Profile p1 = new ProfileImpl();
-		ContainerController mainContainer = rt.createMainContainer(p1);
+			Runtime rt = Runtime.instance();
+			Profile p1 = new ProfileImpl();
+			ContainerController mainContainer = rt.createMainContainer(p1);
 		
-		ArrayList<Drivers> drivers = new ArrayList<Drivers>();
-		ArrayList<Client> clients = new ArrayList<Client>();
-		ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+			ArrayList<Drivers> drivers = new ArrayList<Drivers>();
+			ArrayList<Client> clients = new ArrayList<Client>();
+			ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
 		
-		drivers = parseFiles.parseDrivers();
-		clients = parseFiles.parseClients();
-		restaurants = parseFiles.parseRestaurants();
+			drivers = parseFiles.parseDrivers();
+			clients = parseFiles.parseClients();
+			restaurants = parseFiles.parseRestaurants();
 		
-		System.out.println("NUMEROS DE PEDIDOS = " + clients.size());
+			System.out.println("NUMEROS DE PEDIDOS = " + clients.size());
 		
-		for(int j = 0; j < drivers.size(); j++) {
-			AgentController ac0;
-			try {
-				ac0= mainContainer.acceptNewAgent(drivers.get(j).getDriverName(), drivers.get(j));
-				ac0.start();
+			for(int j = 0; j < drivers.size(); j++) {
+				AgentController ac0;
+				try {
+					ac0= mainContainer.acceptNewAgent(drivers.get(j).getDriverName(), drivers.get(j));
+					ac0.start();
+				}
+				catch (StaleProxyException e) {
+					e.printStackTrace();
+				}		
 			}
-			catch (StaleProxyException e) {
-				e.printStackTrace();
-			}		
+		
+			for(int j = 0; j < restaurants.size(); j++) {
+				AgentController ac0;
+				try {
+					ac0= mainContainer.acceptNewAgent(restaurants.get(j).getRestaurantName(), restaurants.get(j));
+					ac0.start();
+				}
+				catch (StaleProxyException e) {
+					e.printStackTrace();
+				}		
+			}
+		
+			for(int j=0; j < clients.size();j++) {
+				AgentController ac0;
+				try {
+					ac0= mainContainer.acceptNewAgent(clients.get(j).getClientName(), clients.get(j));
+					ac0.start();
+				}
+				catch (StaleProxyException e) {
+					e.printStackTrace();
+				}		
+			}
 		}
-		
-		for(int j = 0; j < restaurants.size(); j++) {
-			AgentController ac0;
-			try {
-				ac0= mainContainer.acceptNewAgent(restaurants.get(j).getRestaurantName(), restaurants.get(j));
-				ac0.start();
-			}
-			catch (StaleProxyException e) {
-				e.printStackTrace();
-			}		
-		}
-		
-		for(int j=0; j < clients.size();j++) {
-			AgentController ac0;
-			try {
-				ac0= mainContainer.acceptNewAgent(clients.get(j).getClientName(), clients.get(j));
-				ac0.start();
-			}
-			catch (StaleProxyException e) {
-				e.printStackTrace();
-			}		
-		}}
 	}
-	
 }
