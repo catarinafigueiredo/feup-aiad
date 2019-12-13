@@ -83,11 +83,11 @@ public class EcoSystem {
 				float percCrit1 = ((float)crit1)/((float)gen.getClientes());
 				float percCrit2 = ((float)crit2)/((float)gen.getClientes());
 				
-				ss += "	";
+				ss += "\t";
 				ss += percCrit0;
-				ss += "	";
+				ss += "\t";
 				ss += percCrit1;
-				ss += "	";
+				ss += "\t";
 				ss += percCrit2;
 				
 				/*writer.write("	".getBytes());
@@ -97,12 +97,12 @@ public class EcoSystem {
 				writer.write("	".getBytes());
 				writer.write(Float.toString(percCrit2).getBytes());*/
 				
-				ss += "	";
+				ss += "\t";
 				ss += restaurants.size();
-				ss += "	";
+				ss += "\t";
 				
 				ss += drivers.size();
-				ss += "	";
+				ss += "\t";
 				
 				/*writer.write("	".getBytes());
 				writer.write(String.valueOf(restaurants.size()).getBytes());
@@ -135,13 +135,13 @@ public class EcoSystem {
 				}
 				
 				ss += q1;
-				ss += "	";
+				ss += "\t";
 				ss += q2;
-				ss += "	";
+				ss += "\t";
 				ss += q3;
-				ss += "	";
+				ss += "\t";
 				ss += q4;
-				ss += "	";
+				ss += "\t";
 				
 				/*writer.write(String.valueOf(q1).getBytes());
 				writer.write("	".getBytes());
@@ -176,13 +176,13 @@ public class EcoSystem {
 				}
 				
 				ss += q1;
-				ss += "	";
+				ss += "\t";
 				ss += q2;
-				ss += "	";
+				ss += "\t";
 				ss += q3;
-				ss += "	";
+				ss += "\t";
 				ss += q4;
-				ss += "	";
+				ss += "\t";
 				
 				/*writer.write(String.valueOf(q1).getBytes());
 				writer.write("	".getBytes());
@@ -217,13 +217,13 @@ public class EcoSystem {
 				}
 				
 				ss += q1;
-				ss += "	";
+				ss += "\t";
 				ss += q2;
-				ss += "	";
+				ss += "\t";
 				ss += q3;
-				ss += "	";
+				ss += "\t";
 				ss += q4;
-				ss += "	\n";
+				ss += "\t\n"; // CATARINA: mete aqui entre o \t e \n a variavel dependente
 				
 				/*writer.write(String.valueOf(q1).getBytes());
 				writer.write("	".getBytes());
