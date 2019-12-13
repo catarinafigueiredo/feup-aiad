@@ -225,6 +225,8 @@ public class EcoSystem {
 				ss += q4;
 				ss += "\t\n"; // CATARINA: mete aqui entre o \t e \n a variavel dependente
 				
+				
+				
 				/*writer.write(String.valueOf(q1).getBytes());
 				writer.write("	".getBytes());
 				writer.write(String.valueOf(q2).getBytes());
@@ -243,6 +245,7 @@ public class EcoSystem {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				ss = "";
 			
 			for(int j = 0; j < restaurants.size(); j++) {
 				restaurants.get(j).setNumClients(gen.getClientes());
