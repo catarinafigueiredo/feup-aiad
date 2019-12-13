@@ -1,0 +1,4 @@
+Mcdonald's pronto.
+Cliente Lucas@10.227.147.80:1099/JADE pediu cheeseburger.
+Cliente Lucas@10.227.147.80:1099/JADE efetuou pagamento. Iniciando contacto com drivers para fazer a entrega...
+Foi selecionado o driver Tiago@10.227.147.80:1099/JADE para entregar cheeseburger a Lucas@10.227.147.80:1099/JADE.

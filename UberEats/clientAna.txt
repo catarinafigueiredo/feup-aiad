@@ -1,0 +1,4 @@
+Estou pronto para pedir.
+Vou pedir pizza e quero pagar o menos possivel.
+O restaurante escolhido para o meu pedido foi SenhorAlberto@10.227.147.80:1099/JADE e fica por 4.0 euros.
+O meu pedido foi feito! Aguardando entrega...

@@ -1,0 +1,5 @@
+SenhorAlberto pronto.
+Cliente Ana@10.227.147.80:1099/JADE pediu pizza.
+Cliente Ana@10.227.147.80:1099/JADE efetuou pagamento. Iniciando contacto com drivers para fazer a entrega...
+Foi selecionado o driver Matilde@10.227.147.80:1099/JADE para entregar pizza a Ana@10.227.147.80:1099/JADE.
+Cliente Catarina@10.227.147.80:1099/JADE pediu bacalhau.

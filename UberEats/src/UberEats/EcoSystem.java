@@ -18,7 +18,7 @@ public class EcoSystem {
 	public static void main(String[] args) {
 		
 		// fazer um for com 1000 iteracoes
-		//for(int i = 0; i < 1000; i++) {
+		for(int i = 0; i < 1000; i++) {
 			//System.out.println("ITE " +i+" -------------------------\n");
 			
 			caseGenerator gen = new caseGenerator(5,20,  5,15,  10,15);
@@ -44,8 +44,11 @@ public class EcoSystem {
 			restaurants = parseFiles.parseRestaurants();
 			
 			for(int j = 0; j < restaurants.size(); j++) {
-				//restaurants.get(j).setNumClients(gen.getClientes());
-				restaurants.get(j).setNumClients(5);
+				restaurants.get(j).setNumClients(gen.getClientes());
+			}
+			
+			for(int j = 0; j < drivers.size(); j++) {
+				drivers.get(j).setNumClients(gen.getClientes());
 			}
 		
 			//System.out.println("NUMEROS DE PEDIDOS = " + clients.size());
@@ -82,6 +85,6 @@ public class EcoSystem {
 					e.printStackTrace();
 				}		
 			}
-		//}
+		}
 	}
 }

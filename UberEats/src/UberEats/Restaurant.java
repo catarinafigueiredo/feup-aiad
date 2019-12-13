@@ -143,8 +143,11 @@ public class Restaurant extends Agent {
 					this.writer.close();
 					DFService.deregister(this);
 				}
-				catch (FIPAException | IOException fe) {
+				catch (IOException fe) {
 					fe.printStackTrace();
+				} catch (FIPAException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 		super.takeDown();
@@ -253,7 +256,7 @@ public class Restaurant extends Agent {
 			if (msg2 != null) {
 				//System.out.println("YES! TA A RECEBER!!");
 				if(receivedOrders >= numClients) {
-					System.out.println("TERMINEI!");
+					//System.out.println("restaurante TERMINEI!");
 					myAgent.doDelete();
 					
 				}
@@ -379,7 +382,7 @@ public class Restaurant extends Agent {
 				ACLMessage reject= new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 				
 				for (int i = 0; i < driverAgents.length; ++i) {
-					if(driverAgents[i]!=bestDriver)
+					if(!bestDriver.equals(driverAgents[i]))
 						reject.addReceiver(driverAgents[i]);
 				} 
 				reject.setContent("");
@@ -406,7 +409,7 @@ public class Restaurant extends Agent {
 						//myAgent.doDelete();
 						//System.out.println(terminate);
 						if(terminate) {
-							System.out.println("TERMINEI!");
+							//System.out.println("restaurante TERMINEI!");
 							myAgent.doDelete();
 							
 						}

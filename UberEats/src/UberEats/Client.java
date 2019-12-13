@@ -143,6 +143,7 @@ public class Client extends Agent {
 		try {
 			this.writer.write("O meu pedido foi feito! Aguardando entrega...\n".getBytes());
 			this.writer.close();
+			//DFService.deregister(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -274,7 +275,7 @@ public class Client extends Agent {
 				ACLMessage reject= new ACLMessage(ACLMessage.REJECT_PROPOSAL);
 				
 				for (int i = 0; i < restaurantAgents.length; ++i) {
-					if(restaurantAgents[i]!=bestSeller)
+					if(!bestSeller.equals(restaurantAgents[i]))
 						reject.addReceiver(restaurantAgents[i]);
 				} 
 				reject.setContent("");
