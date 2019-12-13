@@ -270,6 +270,18 @@ public class Client extends Agent {
 				order.setConversationId("food-trade");//book-trade
 				order.setReplyWith("order"+System.currentTimeMillis());
 				myAgent.send(order);
+				
+				ACLMessage reject= new ACLMessage(ACLMessage.REJECT_PROPOSAL);
+				
+				for (int i = 0; i < restaurantAgents.length; ++i) {
+					if(restaurantAgents[i]!=bestSeller)
+						reject.addReceiver(restaurantAgents[i]);
+				} 
+				reject.setContent("");
+				reject.setConversationId("food");
+				reject.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
+				myAgent.send(reject);
+				
 				// Prepare the template to get the purchase order reply
 				mt = MessageTemplate.and(MessageTemplate.MatchConversationId("food-trade"),//book-trade
 						MessageTemplate.MatchInReplyTo(order.getReplyWith()));
