@@ -38,7 +38,11 @@ public class Restaurant extends Agent {
 	
 	private int ranking;
 	
-	private AID[] driverAgents; 
+	private AID[] driverAgents;
+	
+	private int numClients;
+	private int receivedOrders = 0;
+	private boolean terminate = false;
 	
 	public Restaurant(String name,int x,int y, int ranking, Hashtable catalogue) {
 		this.x = x;
@@ -52,6 +56,12 @@ public class Restaurant extends Agent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setNumClients(int num) {
+		this.numClients = num;
+		//System.out.println("num de clients updated!");
+		
 	}
 	
 	public String getRestaurantName(){
@@ -162,15 +172,22 @@ public class Restaurant extends Agent {
 	   sent back.
 	 */
 	private class OfferRequestsServer extends CyclicBehaviour {
+		
+		
+		
 		public void action() {
 			
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
 			ACLMessage msg = myAgent.receive(mt);
 			if (msg != null) {
 				
+				
 				// CFP Message received. Process it
 				String foodType = msg.getContent();
 				ACLMessage reply = msg.createReply();
+				
+				receivedOrders++;
+				
 				// ve se serve a comida que o cliente quer se sim envia-lhe as suas informações
 				
 				Integer price = (Integer) catalogue.get(foodType);
@@ -186,6 +203,8 @@ public class Restaurant extends Agent {
 					reply.setContent("not-available");
 				}
 				myAgent.send(reply);
+				
+			
 			}
 			else {
 				block();
@@ -204,6 +223,11 @@ public class Restaurant extends Agent {
 			ACLMessage msg2 = myAgent.receive(mt2);
 			
 			if (msg != null) {
+				//System.out.println(numClients);
+				if(receivedOrders >= numClients) {
+					terminate = true;
+					
+				}
 				
 				// ACCEPT_PROPOSAL Message received. Process it
 				String title = msg.getContent();
@@ -228,6 +252,11 @@ public class Restaurant extends Agent {
 			}
 			if (msg2 != null) {
 				//System.out.println("YES! TA A RECEBER!!");
+				if(receivedOrders >= numClients) {
+					System.out.println("TERMINEI!");
+					myAgent.doDelete();
+					
+				}
 			}
 			else {
 				block();
@@ -363,6 +392,12 @@ public class Restaurant extends Agent {
 						System.out.println("PEDIDO TERMINADO! Comida " + food + " entregue por " + reply.getSender().getName() + " a " + clientName + " em " + reply.getContent() + ".");
 						//writer.println("Foi selecionado o driver "+reply.getSender().getName() + " para entregar o pedido.");
 						//myAgent.doDelete();
+						//System.out.println(terminate);
+						if(terminate) {
+							System.out.println("TERMINEI!");
+							myAgent.doDelete();
+							
+						}
 					}
 					else {
 						System.out.println("Attempt failed: restaurant not working right.");

@@ -42,8 +42,13 @@ public class EcoSystem {
 			drivers = parseFiles.parseDrivers();
 			clients = parseFiles.parseClients();
 			restaurants = parseFiles.parseRestaurants();
+			
+			for(int j = 0; j < restaurants.size(); j++) {
+				//restaurants.get(j).setNumClients(gen.getClientes());
+				restaurants.get(j).setNumClients(5);
+			}
 		
-			System.out.println("NUMEROS DE PEDIDOS = " + clients.size());
+			//System.out.println("NUMEROS DE PEDIDOS = " + clients.size());
 		
 			for(int j = 0; j < drivers.size(); j++) {
 				AgentController ac0;
