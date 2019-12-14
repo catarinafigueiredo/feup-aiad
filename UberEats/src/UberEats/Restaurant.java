@@ -6,6 +6,8 @@ package UberEats;
  * - Responsavel por implementar o agente Restaurant. */
 
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
 //import java.io.FileOutputStream;
 //import java.io.IOException;
 import java.lang.Math;
@@ -42,6 +44,7 @@ public class Restaurant extends Agent {
 	
 	private int numClients;
 	private int receivedOrders = 0;
+	private int ordersDone = 0;
 	private boolean terminate = false;
 	
 	public Restaurant(String name,int x,int y, int ranking, Hashtable catalogue) {
@@ -57,7 +60,35 @@ public class Restaurant extends Agent {
 			e.printStackTrace();
 		}*/
 	}
-	
+	public int getOrdersDone() {
+		return this.ordersDone;
+	}
+	public int getRanking() {
+		return this.ranking;
+	}
+	public int getQuad() {
+		return this.calcQuad();
+	}
+	public double getAveragePrice() {
+		int number=0;
+		int totalprice=0;
+		double media;
+		
+        Set setOfCountries = this.catalogue.keySet();
+ 
+        // Collection Iterator
+        Iterator iterator = setOfCountries.iterator();
+ 
+        while(iterator.hasNext()) {
+        	number+=1;
+            String key = (String) iterator.next();
+           
+            totalprice += (Integer) this.catalogue.get(key);
+            
+        }
+		media= (double) totalprice/number;
+		return media;
+	}
 	public int calcQuad() {
 		if(((x>=0)&&(x<=50))&&((y>=0)&&(y<=50))) {
 			return 1;
@@ -242,6 +273,7 @@ public class Restaurant extends Agent {
 			ACLMessage msg2 = myAgent.receive(mt2);
 			
 			if (msg != null) {
+				ordersDone++;
 				//System.out.println(numClients);
 				if(receivedOrders >= numClients) {
 					terminate = true;

@@ -40,7 +40,7 @@ public class EcoSystem {
 		System.out.println("Generating data...");
 		
 		// fazer um for com 1000 iteracoes
-		for(int i = 0; i < 150; i++) {
+		for(int i = 0; i < 1; i++) {
 			//System.out.println("ITE " +i+" -------------------------\n");
 			
 			caseGenerator gen = new caseGenerator(5,20,  5,15,  10,15);
@@ -297,10 +297,16 @@ public class EcoSystem {
 				e.printStackTrace();
 			}
 			
-			int depVar = calcDependentVar();
+			//int depVar = calcDependentVar();
 			
 			try {
-				ss += depVar + "\n";
+				ss += restaurants.get(0).getRanking();
+				ss += "\t";
+				ss += restaurants.get(0).getAveragePrice(); // acho que n tem casa decimais 
+				ss += "\t";
+				ss += restaurants.get(0).getQuad();
+				ss += "\t";
+				ss += restaurants.get(0).getOrdersDone() + "\n";
 				writer.write(ss.getBytes());
 			} catch (IOException e1) {
 				e1.printStackTrace();
