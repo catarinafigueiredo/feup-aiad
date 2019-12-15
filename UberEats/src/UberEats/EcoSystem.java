@@ -40,10 +40,10 @@ public class EcoSystem {
 		System.out.println("Generating data...");
 		
 		// fazer um for com 1000 iteracoes
-		for(int i = 0; i < 1; i++) {
+		for(int i = 0; i < 1000; i++) {
 			//System.out.println("ITE " +i+" -------------------------\n");
 			
-			caseGenerator gen = new caseGenerator(5,20,  5,15,  10,15);
+			caseGenerator gen = new caseGenerator(5,20,  3,8,  10,15);
 			gen.generateFile();
 			
 			/*System.out.println("nClientes = " +gen.getClientes());
@@ -105,8 +105,8 @@ public class EcoSystem {
 				ss += restaurants.size();
 				ss += "\t";
 				
-				ss += drivers.size();
-				ss += "\t";
+				/*ss += drivers.size();
+				ss += "\t";*/
 				
 				/*writer.write("	".getBytes());
 				writer.write(String.valueOf(restaurants.size()).getBytes());
@@ -197,7 +197,7 @@ public class EcoSystem {
 				writer.write(String.valueOf(q4).getBytes());
 				writer.write("	".getBytes());*/
 				
-				q1 = 0;
+				/*q1 = 0;
 				q2 = 0;
 				q3 = 0;
 				q4 = 0;
@@ -218,16 +218,16 @@ public class EcoSystem {
 						q4++;
 						break;
 					}
-				}
+				}*/
 				
-				ss += q1;
+				/*ss += q1;
 				ss += "\t";
 				ss += q2;
 				ss += "\t";
 				ss += q3;
 				ss += "\t";
 				ss += q4;
-				ss += "\t"; // CATARINA: mete aqui entre o \t e \n a variavel dependente
+				ss += "\t";*/
 				
 				
 				
